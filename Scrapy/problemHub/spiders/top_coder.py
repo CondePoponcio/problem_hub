@@ -12,36 +12,36 @@ class TopCoder(scrapy.Spider):
             dif2 = ""
         if(categoria == None):
             categoria = ""
-        self.start_urls = ['https://www.topcoder.com/tc?module=ProblemArchive&cat='+str(categoria)+'&div1l='+str(dif1)+'&div2l='+str(dif2)+'']
+        self.start_urls = ['https://www.topcoder.com/tc?module=ProblemArchive&cat='+str(categoria)+'']#+'&div1l='+str(dif1)+'&div2l='+str(dif2)+'']
 
     #Buscar ejercicios dependiende de la ctaegoria y dificultad
     def parse(self, response):
-        items = ProblemhubItem()
+        item = ProblemhubItem()
+        items = item.deepcopy()
 
-        '''i = 4
-        for ejerciio in response.css('tr~ tr+ tr'):
-            if(i<10):
+        i = 4
+        for ejercio in response.css('tr~ tr+ tr'):
+            if(i<20):
                 titulo = response.css('tr:nth-child('+str(i)+') .alignMiddle+ .statText .statText::text').extract()
                 titulo = ("".join(titulo)).replace(" ","").replace("\n","")
                 categoria = response.css('tr:nth-child('+str(i)+') .statText:nth-child(6)::text').extract()
-                categorias = ("".join(categorias)).replace(" ","").replace("\n","")
+                categoria = ("".join(categoria)).replace(" ","").replace("\n","")
                 dif1 = response.css('tr:nth-child('+str(i)+') .statText:nth-child(7)::text').extract()
                 dif1 = ("".join(dif1)).replace(" ","").replace("\n","")
                 dif2 = response.css('tr:nth-child('+str(i)+') .statText:nth-child(9)::text').extract()
                 dif2 = ("".join(dif2)).replace(" ","").replace("\n","")
-                yield {
-                    'titulos': titulo,
-                    'categorias': categoria,
-                    'dif1': dif1,
-                    'dif2': dif2
-                }
-            i+=1'''
+                dificultad = dif1 + "-" + dif2
+                link = response.css('tr:nth-child('+str(i)+') .alignMiddle+ .statText a::attr(href)').extract()
+                web = 'https://community.topcoder.com'+link[0]
+                yield scrapy.Request(web, callback=self.enunciado, meta={'items':items, 'titulo':titulo, 'categoria':categoria, 'dificultad':dificultad})
 
-        links = response.css('tr~ tr+ tr .alignMiddle+ .statText a::attr(href)').extract()
-        links2 = response.css('tr~ tr+ tr .statText:nth-child(11) a::attr(href)').extract()
-        for i in range(0,10):
-            web = 'https://community.topcoder.com'+links2[i]
-            yield scrapy.Request(web, callback=self.datos, dont_filter=True, meta={'items':items, 'link':links[i]})
+            i+=1
+
+      #  links = response.css('tr~ tr+ tr .alignMiddle+ .statText a::attr(href)').extract()
+       # links2 = response.css('tr~ tr+ tr .statText:nth-child(11) a::attr(href)').extract()
+       # for i in range(0,10):
+        #    web = 'https://community.topcoder.com'+links2[i]
+         #   yield scrapy.Request(web, callback=self.datos, meta={'items':items, 'link':links[i]})
 
     def datos(self, response):
         items = response.meta['items']
@@ -54,7 +54,8 @@ class TopCoder(scrapy.Spider):
         dificultad = ("".join(dificultad)).replace(" ","").replace("\n","")
 
         web = 'https://community.topcoder.com'+link
-        return [scrapy.Request(web, callback=self.enunciado, dont_filter=True, meta={'items':items, 'titulo':titulo, 'categoria':categoria, 'dificultad':dificultad})]
+        return [scrapy.Request(web, callback=self.enunciado, meta={'items':items, 'titulo':titulo, 'categoria':categoria, 'dificultad':dificultad})]
+        #return [scrapy.Request(web, callback=self.enunciado, dont_filter=True, meta={'items':items, 'titulo':titulo, 'categoria':categoria, 'dificultad':dificultad})]
 
 
 
@@ -64,8 +65,7 @@ class TopCoder(scrapy.Spider):
         t = None
         print(i)
         if(i == []):
-            t = response.css('.problemText > table tr:nth-child(2) .statText+ .statText::text, tr:nth-child(2) p::text, tr:nth-child(2) b::text, tr:nth-child(2) i::text').extract()
-            n = repr(t[-1])
+            t = response.css('tr:nth-child(5) .statText .statText::text, tr:nth-child(4) h3::text , tr:nth-child(2) .statText+ .statText::text, tr:nth-child(2) p::text, tr:nth-child(2) b::text, tr:nth-child(2) i::text, .problemText tr:nth-child(1) h3::text').extract()
         if(t != None):
             texto = ("".join(t)).replace("\n"," ")
         else:
