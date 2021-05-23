@@ -13,4 +13,5 @@ class ProblemhubItem(scrapy.Item):
     dificultad = scrapy.Field()
     enunciado = scrapy.Field()
     pruebas = scrapy.Field()
+    url = scrapy.Field()
 
