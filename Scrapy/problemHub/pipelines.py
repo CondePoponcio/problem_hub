@@ -17,15 +17,18 @@ class ProblemhubPipeline:
         self.curr=self.conn.cursor()
 
     def process_item(self, item, spider):
-        sql='insert into Problemas(titulo, categoria, dificultad, enunciado, casos_prueba, origen) values (%s,%s,%s,%s,%s,%s)'
-        datos = (item['titulo'],
-                item['categoria'],
-                item['dificultad'],
-                item['enunciado'],
-                item['pruebas'],
-                item['url'])
-        self.curr.execute(sql, datos)
-        self.conn.commit()
+        self.curr.execute("""SELECT origen FROM problemas where origen = (%s)""", (item['url'],))
+        existe = self.curr.fetchall()
+        if(existe == []):
+            sql2='insert into Problemas(titulo, categoria, dificultad, enunciado, casos_prueba, origen) values (%s,%s,%s,%s,%s,%s)'
+            datos = (item['titulo'],
+                    item['categoria'],
+                    item['dificultad'],
+                    item['enunciado'],
+                    item['pruebas'],
+                    item['url'])
+            self.curr.execute(sql2, datos)
+            self.conn.commit()
         return item
     def close_spider(self, spider):
         self.curr.close()
