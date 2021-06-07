@@ -23,8 +23,9 @@ class TopCoder(scrapy.Spider):
         for ejercio in response.css('tr~ tr+ tr'):
             titulo = ejercio.css('.alignMiddle+ .statText .statText::text').extract()
             titulo = ("".join(titulo)).replace(" ","").replace("\n","")
-            categoria = ejercio.css('.statText:nth-child(6)::text').extract()
-            categoria = ("".join(categoria)).replace(" ","").replace("\n","")
+            cat = ejercio.css('.statText:nth-child(6)::text').extract()
+            cat = ("".join(cat)).replace(" ","").replace("\n","")
+            categoria = cat.split(",")
             dif1 = ejercio.css('.statText:nth-child(7)::text').extract()
             dif1 = ("".join(dif1)).replace(" ","").replace("\n","")
             if(dif1 == ""):
@@ -46,23 +47,17 @@ class TopCoder(scrapy.Spider):
 
         self.avance += 50
         siguiente = response.css('br~ .paddingTable2 .statText:nth-child(1) a::attr(href)').extract()
-        if(siguiente[0] == 'Javascript:next()'):
-            next = 'https://www.topcoder.com/tc?module=ProblemArchive&sr='+str(self.avance)+'&er='+str(self.avance+50)+'&cat='+str(self.cat)+'&div1l='+str(self.d1)+'&div2l='+str(self.d2)+''
-            yield scrapy.Request(next, callback=self.parse)            
+        if(siguiente != []):
+            if(siguiente[0] == 'Javascript:next()'):
+                next = 'https://www.topcoder.com/tc?module=ProblemArchive&sr='+str(self.avance)+'&er='+str(self.avance+50)+'&cat='+str(self.cat)+'&div1l='+str(self.d1)+'&div2l='+str(self.d2)+''
+                yield scrapy.Request(next, callback=self.parse)            
 
     def enunciado(self, response):
         items = response.meta['items']
-        i = response.css('.problemText img').extract()
-        t = None
-        #if(i == []):
-            #t = response.css('tr:nth-child(5) .statText .statText::text, tr:nth-child(4) h3::text , tr:nth-child(2) .statText+ .statText::text, tr:nth-child(2) p::text, tr:nth-child(2) b::text, tr:nth-child(2) i::text, .problemText tr:nth-child(1) h3::text').extract()
         t = response.css('tr:nth-child(2) .statText+ .statText::text, tr:nth-child(2) p::text, tr:nth-child(2) b::text, tr:nth-child(2) i::text').extract()
 
-        #if(t != None):
         n = t[-1]
         texto = ("".join(t)).replace("\n"," ").replace(n,"")
-        #else:
-         #   texto = "NO VAlido."
 
         pruebas = response.css('pre::text').extract()
         c = []
@@ -84,6 +79,6 @@ class TopCoder(scrapy.Spider):
         items['categoria'] = categoria
         items['dificultad'] = dificultad
         items['enunciado'] = texto
-        items['pruebas'] = pruebas
+        items['pruebas'] = casos
         items['url'] = url
         return [items]
