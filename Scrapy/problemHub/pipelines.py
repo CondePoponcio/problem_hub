@@ -8,8 +8,6 @@
 import psycopg2
 from itemadapter import ItemAdapter
 
-
-
 class ProblemhubPipeline:
 
     def open_spider(self, spider):
@@ -17,7 +15,7 @@ class ProblemhubPipeline:
         self.curr=self.conn.cursor()
 
     def process_item(self, item, spider):
-        self.curr.execute("""SELECT origen FROM problemas where origen = (%s)""", (item['url'],))
+        self.curr.execute("""SELECT origen FROM Problemas where origen = (%s)""", (item['url'],))
         existe = self.curr.fetchall()
         if(existe == []):
             sql2='insert into Problemas(titulo, categoria, dificultad, enunciado, casos_prueba, origen) values (%s,%s,%s,%s,%s,%s)'

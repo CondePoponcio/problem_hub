@@ -1,24 +1,42 @@
 import scrapy
 from ..items import ProblemhubItem
+import json
 
 
 class CodeForce(scrapy.Spider):
     name = 'codeforce'
+    
+    def __init__(self, cat=None, dif1=None, dif2=None, *args, **kwargs):
+        self.d1 = ''
+        self.d2 = ''
+        self.cat = ''
+        if(dif1 != None):
+            self.d1 = dif1
+        if(dif2 != None):
+            self.d2 = dif2
+        if(cat != None):
+            self.cat = cat
 
     def start_requests(self):
-        url = 'https://codeforces.com/problemset/page/1?tags=greedy%2C1800-1800'
+        url = 'https://codeforces.com/problemset/page/1?tags='+str(self.cat)+'%2C'+str(self.d1)+'-'+str(self.d2)+''
         yield scrapy.Request(url=url, callback=self.parse)
     
     def parse(self, response):
         items = ProblemhubItem()
-        i = 0
         for ejercicio in response.css('tr'):
             titulo = ejercicio.css('div:nth-child(1) a::text').extract()
             titulo = ("".join(titulo)).replace(" ","").replace("\n","").replace("\r","")
             categoria = ejercicio.css('.notice::text').extract()
+            categoria = json.dumps(categoria)
             dificultad = ejercicio.css('.ProblemRating::text').extract() 
-            dificultad = ("".join(dificultad))
-
+            if(dificultad != []):
+                dificultad = ("".join(dificultad))
+                if(int(dificultad) <= 1400):
+                    dificultad = "Facil"
+                elif(int(dificultad) <= 1800):
+                    dificultad = "Medio"
+                else:
+                    dificultad = "Dificil"
             link = ejercicio.css('div:nth-child(1) a::attr(href)').extract()
             if(link != []):
                 url = 'https://codeforces.com/'+link[0]
@@ -38,7 +56,7 @@ class CodeForce(scrapy.Spider):
         pruebas = problema.css('pre::text, .output .title::text').extract()
         c = []
         i = 1
-        casos = {}
+        casos = []
         condicion = False
         for prueba in pruebas:
             if(condicion == True):
@@ -46,13 +64,15 @@ class CodeForce(scrapy.Spider):
             elif(prueba.find("Output") == -1):
                 c.append(prueba)
             if(condicion == True):
-                n = 'caso '+str(i)+''
-                casos[n] = c
+                #n = 'caso '+str(i)+''
+                casos.append(c)
                 c = []
                 i +=1
                 condicion = False
             if(prueba.find("Output") != -1):
                 condicion = True
+
+        casos = json.dumps(casos)
 
         titulo = response.meta['titulo']
         dificultad = response.meta['dificultad']

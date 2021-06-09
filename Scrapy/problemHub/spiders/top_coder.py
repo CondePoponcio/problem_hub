@@ -1,3 +1,4 @@
+import json
 import scrapy
 from ..items import ProblemhubItem
 
@@ -15,7 +16,10 @@ class TopCoder(scrapy.Spider):
             self.d2 = dif2
         if(categoria != None):
             self.cat = categoria
-        self.start_urls = ['https://www.topcoder.com/tc?module=ProblemArchive&cat='+str(self.cat)+'&div1l='+str(self.d1)+'&div2l='+str(self.d2)+'']
+
+    def start_requests(self):
+        url = 'https://www.topcoder.com/tc?module=ProblemArchive&cat='+str(self.cat)+'&div1l='+str(self.d1)+'&div2l='+str(self.d2)+''
+        yield scrapy.Request(url=url, callback=self.parse)
 
     #Buscar ejercicios dependiende de la ctaegoria y dificultad
     def parse(self, response):
@@ -26,6 +30,7 @@ class TopCoder(scrapy.Spider):
             cat = ejercio.css('.statText:nth-child(6)::text').extract()
             cat = ("".join(cat)).replace(" ","").replace("\n","")
             categoria = cat.split(",")
+            categoria = json.dumps(categoria)
             dif1 = ejercio.css('.statText:nth-child(7)::text').extract()
             dif1 = ("".join(dif1)).replace(" ","").replace("\n","")
             if(dif1 == ""):
@@ -62,14 +67,15 @@ class TopCoder(scrapy.Spider):
         pruebas = response.css('pre::text').extract()
         c = []
         i = 1
-        casos = {}
+        casos = []
         for prueba in pruebas:
             c.append(prueba)
             if(prueba.find("Returns:") != -1):
-                n = 'caso '+str(i)+''
-                casos[n] = c
+                #n = 'caso '+str(i)+''
+                casos.append(c)
                 c = []
                 i +=1
+        casos = json.dumps(casos)
         
         titulo = response.meta['titulo']
         dificultad = response.meta['dificultad']
