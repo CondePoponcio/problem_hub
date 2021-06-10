@@ -1,2 +1,4 @@
 flask
 psycopg2-binary>=2.8
+django
+djangorestframework
