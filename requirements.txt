@@ -4,5 +4,6 @@ django
 djangorestframework
 django-debug-toolbar
 virtualenv
+django-oauth-toolkit
 # For creating test data
 factory_boy

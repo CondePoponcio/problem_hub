@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'api.apps.ApiConfig',
     'rest_framework',
-    'frontend.apps.FrontendConfig'
+    'frontend.apps.FrontendConfig',
+    'oauth2_provider'
+
 ]
 
 MIDDLEWARE = [
