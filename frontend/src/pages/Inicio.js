@@ -22,7 +22,11 @@ const Inicio = (props) => {
     return(
         
         <div className="grid">
-            <div className="topBar"></div>
+            <div className="topBar">
+                <h2>Problem <span>Hub</span></h2>
+
+                <a href="#">Iniciar Sesión</a>
+            </div>
             <div className="sideBar">
 
             </div>

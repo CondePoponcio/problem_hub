@@ -27,7 +27,7 @@ class Cursos(models.Model):
 class Problemas(models.Model):
     id = models.AutoField(primary_key=True) 
     titulo = models.TextField(null=False) 
-    categoria = models.TextField(null=False) 
+    categoria = models.JSONField(null=False) 
     dificultad = models.CharField(max_length=7) 
     enunciado = models.TextField(null=False, blank=False) 
     casos_prueba = JSONField(null=False) 
