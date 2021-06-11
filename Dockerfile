@@ -23,7 +23,7 @@ RUN npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-
 
 RUN npm i react react-dom react-router-dom --save-dev
 
-RUN npm i @material-ui/core @material-ui/icons
+RUN npm i @material-ui/core @material-ui/icons css-loader style-loader
 
 RUN npm i @babel/plugin-proposal-class-properties
 #RUN source venv/bin/activate

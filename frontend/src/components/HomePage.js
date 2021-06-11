@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Switch, Route, Link, Redirect} from 'react-rout
 
 import Room from './Test/Room';
 import Create from './Test/Create';
+import Inicio from './../pages/Inicio';
 
 const HomePage = () => {
 
@@ -13,9 +14,9 @@ const HomePage = () => {
                 {
                 //<Route path='/' component=''/>
                 }
-                <Route exact path="/"><p>hey!</p></Route>
-                <Route path="/join" component={Room}/>
-                <Route path="/join1" component={Create}/>
+                <Route exact path="/" component={Inicio}></Route>
+                <Route exact path="/join" component={Room}/>
+                <Route exact path="/join1" component={Create}/>
             </Switch>
         </Router>
     )
