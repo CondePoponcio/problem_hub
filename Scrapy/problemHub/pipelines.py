@@ -11,14 +11,14 @@ from itemadapter import ItemAdapter
 class ProblemhubPipeline:
 
     def open_spider(self, spider):
-        self.conn = psycopg2.connect(host='localhost', database='problemHub', user='postgres', password='Hola')
+        self.conn = psycopg2.connect(host='db', database='postgres', user='postgres', password='postgres')
         self.curr=self.conn.cursor()
 
     def process_item(self, item, spider):
-        self.curr.execute("""SELECT origen FROM Problemas where origen = (%s)""", (item['url'],))
+        self.curr.execute("""SELECT origen FROM api_problemas where origen = (%s)""", (item['url'],))
         existe = self.curr.fetchall()
         if(existe == []):
-            sql2='insert into Problemas(titulo, categoria, dificultad, enunciado, casos_prueba, origen) values (%s,%s,%s,%s,%s,%s)'
+            sql2='insert into api_problemas(titulo, categoria, dificultad, enunciado, casos_prueba, origen) values (%s,%s,%s,%s,%s,%s)'
             datos = (item['titulo'],
                     item['categoria'],
                     item['dificultad'],

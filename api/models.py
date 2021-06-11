@@ -31,8 +31,8 @@ class Problemas(models.Model):
     dificultad = models.CharField(max_length=7) 
     enunciado = models.TextField(null=False, blank=False) 
     casos_prueba = JSONField(null=False) 
-    origen = models.IntegerField(null=False)
-    curso_id = models.ForeignKey(Cursos, on_delete=models.CASCADE)
+    origen = models.TextField(null=False)
+    #curso_id = models.ForeignKey(Cursos, on_delete=models.CASCADE)
     
 class Evaluaciones(models.Model):
     id = models.AutoField(primary_key=True) 

@@ -1,24 +1,9 @@
 
 import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
+import Tabla from './../components/Tabla'
 const Inicio = (props) => {
-    const [datos, setDatos] = useState([])
-    useEffect(()=>{
-        
-        fetch('http://localhost:8000/api/problemas', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => response.json())
-        .then((json) =>{
-            console.log("Hola soy : ",json);
-            //alert("Hola")
-        })
-
-    },[])
-
+    
     return(
         
         <div className="grid">
@@ -32,8 +17,10 @@ const Inicio = (props) => {
             </div>
             <div className="content">
 
-
-                <button onClick={()=>{
+                <Tabla />
+                {
+                /*
+                                <button onClick={()=>{
                     var csrftoken = getCookie('csrftoken');
                     const requestOptions = {
                         method: "POST",
@@ -48,6 +35,8 @@ const Inicio = (props) => {
                         
                     })
                 }}>Enviar</button>
+                */
+                }
                 
             </div>
         </div>

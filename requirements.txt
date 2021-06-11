@@ -6,3 +6,4 @@ django-debug-toolbar
 virtualenv
 # For creating test data
 factory_boy
+scrapy
