@@ -2,3 +2,7 @@ flask
 psycopg2-binary>=2.8
 django
 djangorestframework
+django-debug-toolbar
+virtualenv
+# For creating test data
+factory_boy

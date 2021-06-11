@@ -17,13 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 #4 hours video
-from apps.pages.views import *
+from pages.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('aplicacion/', include('apps.aplicacion.urls')),
-    path('include_pages/', include('apps.pages.urls')),
-    path('products/', include('apps.products.urls')),
-    path('servidor/', include('apps.servidor.urls')),
+    path('aplicacion/', include('aplicacion.urls')),
+    path('include_pages/', include('pages.urls')),
+    path('products/', include('products.urls')),
+    path('servidor/', include('servidor.urls')),
     
     path('', home_view, name="home"),
     path('contact/', contact_view, name="home"),
