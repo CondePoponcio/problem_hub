@@ -10,7 +10,7 @@ class TopCoder(scrapy.Spider):
         self.cat = ''
         self.avance = 1
         if(dif != None):
-            self.d1 = dif
+            self.d = dif
         if(cat != None):
             self.cat = cat
 
