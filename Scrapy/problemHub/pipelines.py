@@ -11,7 +11,7 @@ from itemadapter import ItemAdapter
 class ProblemhubPipeline:
 
     def open_spider(self, spider):
-        self.conn = psycopg2.connect(host='localhost', database='problemHub', user='postgres', password='postgres')
+        self.conn = psycopg2.connect(host='localhost', database='problemHub', user='postgres', password='Hola')
         self.curr=self.conn.cursor()
 
     def process_item(self, item, spider):
