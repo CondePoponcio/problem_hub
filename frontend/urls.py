@@ -8,5 +8,5 @@ urlpatterns = [
     path('', index),
     path('join', index),
     path('create', index),
-    
+    path('problema/<int:id>', index),
 ]

@@ -25,9 +25,6 @@ urlpatterns = [
     #path('products/', include('products.urls')),
     path('api/', include('api.urls')),
     path('', include('frontend.urls')),
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    #path('', home_view, name="home"),
-    #path('contact/', contact_view, name="home"),
-    #path('about/', about_view, name="home"),
+    #path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     
 ]

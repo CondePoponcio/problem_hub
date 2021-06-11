@@ -27,6 +27,15 @@ class ProblemasView(APIView):
         queryset = Problemas.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response({'data': serializer.data})
+
+class ViewOneProblem(APIView):
+    serializer_class = ProblemasSerializer
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs['id']
+        #id = request.query_params.get('title', None)
+        queryset = Problemas.objects.get(id=id)
+        serializer = self.serializer_class(queryset)
+        return Response({'data': serializer.data})
   
 
 class CreateProblemas(APIView):

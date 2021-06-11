@@ -1,75 +1,87 @@
 
 import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { AccessAlarm, ThreeDRotation, HouseIcon, CodeIcon } from '@material-ui/icons';
 
-import ReactDatatable from '@ashvin27/react-datatable';
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: '#233442',
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-const columnsE = [
-    {
-        key: "titulo",
-        text: "Título",
-        className: "title",
-        sortable: true
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
     },
-    {
-        key: "id",
-        text: "Categoría",
-        className: "categoria",
-        TrOnlyClassName: "categoria",
-        sortable: true
-    },
-    {
-        key: "dificultad",
-        text: "Dificultad",
-        className: "dificultad",
-        sortable: true
-    }
-]
-const Tabla = (props) => {
-    const [columns, setColumns] = useState(columnsE)
-    const [records, setRecords] = useState([])
-    useEffect(()=>{
-        
-        fetch('/api/problemas', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => response.json())
-        .then((json) =>{
-            console.log("Hola soy : ",json);
-            //alert("Hola")
-            setRecords(json)
-        })
+  },
+}))(TableRow);
 
-    },[])
-    const config = {
-        page_size: 10,
-        length_menu: [10, 20, 50],
-        show_filter: false,
-        show_pagination: false,
-        button: {
-            excel: false,
-            print: false
-        }
-    }
-    
-    useEffect(()=>{
-        if(props.problemas){
-            setRecords(props.problemas)
-        }
-    },[props.problemas])
-    
-
-    return (
-        <ReactDatatable
-            className="table custom-style-table"
-            tHeadClassName="custom-header-style"
-            config={config}
-            records={records}
-            columns={columns}/>
-    );
+function createData(id, titulo, dificultad, categoria) {
+  return { id: id, titulo: titulo, dificultad: dificultad, categoria: categoria };
 }
 
-export default Tabla;
+const useStyles = makeStyles({
+  table: {
+    minWidth: 400,
+  },
+});
+
+export default function Tabla(props) {
+  const classes = useStyles();
+    const [datos, setDatos] = useState([])
+    useEffect(()=>{
+        if(props.problemas){
+            setDatos(props.problemas.map(item => {
+                var cat = (item.categoria.length > 0)?item.categoria[0]:'No disponible'
+                console.log("hey hey",cat, item.categoria, item.categoria.lenght > 0)
+                return createData(item.id, item.titulo, item.dificultad, cat)
+            }))
+        }
+    },[props.problemas])
+  return (
+    <div className="table-container-pope">
+        <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+            <TableRow>
+                <StyledTableCell>Título</StyledTableCell>
+                <StyledTableCell >Dificultad</StyledTableCell>
+                <StyledTableCell >Categoría</StyledTableCell>
+                <StyledTableCell >Acciones</StyledTableCell>
+            </TableRow>
+            </TableHead>
+            <TableBody>
+            {datos.map((row) => (
+                <StyledTableRow key={row.titulo} >
+                <StyledTableCell>
+                    {row.titulo}
+                </StyledTableCell>
+                <StyledTableCell >{row.dificultad}</StyledTableCell>
+                <StyledTableCell >{row.categoria}</StyledTableCell>
+                <StyledTableCell >
+                    <a className="action" href={"/problema/" + row.id}  >
+                        Ver Ejercicio
+                    </a>
+                </StyledTableCell>
+                </StyledTableRow>
+            ))}
+            </TableBody>
+        </Table>
+        </TableContainer>
+    
+    </div>
+    );
+}

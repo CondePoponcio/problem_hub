@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Switch, Route, Link, Redirect} from 'react-rout
 import Room from './Test/Room';
 import Create from './Test/Create';
 import Inicio from './../pages/Inicio';
+import Problema from './../pages/Problema';
 
 const HomePage = () => {
 
@@ -17,6 +18,8 @@ const HomePage = () => {
                 <Route exact path="/" component={Inicio}></Route>
                 <Route exact path="/join" component={Room}/>
                 <Route exact path="/join1" component={Create}/>
+                <Route exact path="/problema/:id" component={Problema}/>
+                
             </Switch>
         </Router>
     )

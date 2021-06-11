@@ -2,22 +2,50 @@
 import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
 import Tabla from './../components/Tabla'
+
 const Inicio = (props) => {
-    
+    const [datos, setDatos] = useState([])
+    useEffect(()=>{
+        
+        fetch('/api/problemas', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => response.json())
+        .then((json) =>{
+            console.log("Hola soy : ",json);
+            //alert("Hola")
+            if(json.data){
+                setDatos(json.data)
+            }
+            
+        })
+
+    },[])
+
     return(
         
         <div className="grid">
-            <div className="topBar">
-                <h2>Problem <span>Hub</span></h2>
+            <div className="topBar navbar">
+                <a href={"/"} className="logo">Problem <span>Hub</span></a>
 
-                <a href="#">Iniciar Sesión</a>
+                <a href="#" className="inicio">Iniciar Sesión</a>
             </div>
             <div className="sideBar">
+                <div>
+                </div>
+                <div>
 
+                </div>
+                <div>
+                    
+                </div>
             </div>
             <div className="content">
 
-                <Tabla />
+                <Tabla problemas={datos}/>
                 {
                 /*
                                 <button onClick={()=>{
