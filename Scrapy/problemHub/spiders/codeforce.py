@@ -23,24 +23,27 @@ class CodeForce(scrapy.Spider):
     
     def parse(self, response):
         items = ProblemhubItem()
+        i = 0
         for ejercicio in response.css('tr'):
-            titulo = ejercicio.css('div:nth-child(1) a::text').extract()
-            titulo = ("".join(titulo)).replace(" ","").replace("\n","").replace("\r","")
-            categoria = ejercicio.css('.notice::text').extract()
-            categoria = json.dumps(categoria)
-            dificultad = ejercicio.css('.ProblemRating::text').extract() 
-            if(dificultad != []):
-                dificultad = ("".join(dificultad))
-                if(int(dificultad) <= 1400):
-                    dificultad = "Facil"
-                elif(int(dificultad) <= 1800):
-                    dificultad = "Medio"
-                else:
-                    dificultad = "Dificil"
-            link = ejercicio.css('div:nth-child(1) a::attr(href)').extract()
-            if(link != []):
-                url = 'https://codeforces.com/'+link[0]
-                yield scrapy.Request(url, callback=self.enunciado, meta={'items':items, 'titulo':titulo, 'categoria':categoria, 'dificultad':dificultad, 'url':url})
+            if i < 2:
+                titulo = ejercicio.css('div:nth-child(1) a::text').extract()
+                titulo = ("".join(titulo)).replace(" ","").replace("\n","").replace("\r","")
+                categoria = ejercicio.css('.notice::text').extract()
+                categoria = json.dumps(categoria)
+                dificultad = ejercicio.css('.ProblemRating::text').extract() 
+                if(dificultad != []):
+                    dificultad = ("".join(dificultad))
+                    if(int(dificultad) <= 1400):
+                        dificultad = "Facil"
+                    elif(int(dificultad) <= 2000):
+                        dificultad = "Medio"
+                    else:
+                        dificultad = "Dificil"
+                link = ejercicio.css('div:nth-child(1) a::attr(href)').extract()
+                if(link != []):
+                    url = 'https://codeforces.com/'+link[0]
+                    yield scrapy.Request(url, callback=self.enunciado, meta={'items':items, 'titulo':titulo, 'categoria':categoria, 'dificultad':dificultad, 'url':url})
+                i+=1
         siguiente = response.css('li+ li .arrow::attr(href)').extract()
         if(siguiente != []):
             next = 'https://codeforces.com'+siguiente[0]
