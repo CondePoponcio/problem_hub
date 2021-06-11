@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     #own
     'products.apps.ProductsConfig',
     'pages.apps.PagesConfig',
-    'servidor.apps.ServidorConfig'
+    'api.apps.ApiConfig',
+    'rest_framework',
+    'frontend.apps.FrontendConfig'
 ]
 
 MIDDLEWARE = [
