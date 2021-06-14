@@ -14,8 +14,9 @@ services:
     build: .
     command: python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8080
     volumes:
-    - .:/code
+    - .:/home/problem_hub
     ports:
+    - "8000:8000"
     - "8080:8080"
     depends_on:
       - db
