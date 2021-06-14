@@ -5,3 +5,11 @@ venv
 frontend/node_modules
 
 **/node_modules/
+
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
