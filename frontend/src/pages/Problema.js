@@ -49,20 +49,28 @@ const Problema = (props) => {
 
                 <h3>{datos.titulo}</h3>
                 <div className="cat-problem">
-                    <div>Categorías:</div>
-                    <ul>
+                    <div>Categorías: </div>
+                    <p>
                         {(datos.categoria)?datos.categoria.map((value, index) => {
-                            return (
-                                <li key={index}>
-                                    {value}
-                                </li>
-                            )
+                            return (<span key={index}>{value + " | "}</span>)
                         }):null}
-                    </ul>
+                    </p>
 
                 </div>
                 <p>
                     {datos.enunciado}
+                </p>
+                <p className="inputProblems">
+                    Valores de entrada y salida:
+                    <ul>
+                        {(datos.casos_prueba)?datos.casos_prueba.map((value, index) => {
+                            console.log("Datos de prueba: ", value, datos.casos_prueba.length)
+                            if(datos.casos_prueba.length != index + 1){
+                                return (<li key={index}>{value + " | "}</li>)
+                            }
+                            
+                        }):null}
+                    </ul>
                 </p>
             </div>
             :<div className="loading">

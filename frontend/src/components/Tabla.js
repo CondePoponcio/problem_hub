@@ -71,7 +71,7 @@ export default function Tabla(props) {
                 </StyledTableCell>
                 <StyledTableCell >{row.dificultad}</StyledTableCell>
                 <StyledTableCell >{row.categoria}</StyledTableCell>
-                <StyledTableCell >
+                <StyledTableCell className="button-table-min-width">
                     <a className="action" href={"/problema/" + row.id}  >
                         Ver Ejercicio
                     </a>

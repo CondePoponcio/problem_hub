@@ -3,7 +3,9 @@
 body *{
     font-family: 'Mulish', sans-serif;
 }
-
+.button-table-min-width{
+    min-width: 100px;
+}
 .action{
     background-color: #3D4E60;
     padding: 10px;
@@ -27,12 +29,13 @@ body *{
     justify-content: center;
     align-items: center;
 }
-.cat-problem ul
+.cat-problem > div
 {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
+    align-self: start;
+}
+.cat-problem > p
+{
+    margin: 0;
 }
 
 .cat-problem li + li
@@ -46,6 +49,7 @@ body *{
     width: 100%;
     height: 100%;
     grid-column: 2 / -1;
+    margin-top: 1em;
 }
 .content > .titles{
     align-items: center;
