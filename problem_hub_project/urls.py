@@ -16,15 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-#4 hours video
-from pages.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('aplicacion/', include('aplicacion.urls')),
-    #path('include_pages/', include('pages.urls')),
-    #path('products/', include('products.urls')),
     path('api/', include('api.urls')),
     path('', include('frontend.urls')),
-    #path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     
 ]

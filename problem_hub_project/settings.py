@@ -37,16 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'aplicacion.apps.AplicacionConfig',
-    #third party
-
     #own
-    'products.apps.ProductsConfig',
-    'pages.apps.PagesConfig',
     'api.apps.ApiConfig',
     'rest_framework',
     'frontend.apps.FrontendConfig',
-    'oauth2_provider'
+#    'oauth2_provider'
 
 ]
 

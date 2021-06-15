@@ -2,7 +2,7 @@ FROM python:3.9
 
 ENV PYTHONNUNBUFFERED 1
 
-ENV CODIGO=/home/problem_hub
+ENV CODIGO /home/problem_hub
 
 RUN apt-get update
 
@@ -16,15 +16,30 @@ RUN python -m pip install -r requirements.txt
 
 RUN python -m venv venv
 
-RUN apt-get install -y nodejs npm
+# NODE Configuration
+
+#RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash 
+
+RUN git clone http://github.com/creationix/nvm.git /root/.nvm 
+
+#RUN chmod -R 777 /root/.nvm/ 
+
+RUN bash /root/.nvm/install.sh 
+
+RUN bash -i -c 'nvm install node';
+
 
 WORKDIR $CODIGO/frontend
 
-RUN npm install
+RUN bash -i -c 'npm install';
 
 WORKDIR $CODIGO 
 
 CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver
+
+
+
+
 
 #RUN npm i webpack webpack-cli
 
