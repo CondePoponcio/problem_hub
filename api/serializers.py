@@ -15,4 +15,20 @@ class CursosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cursos
-        fields = ('id', 'codigo_ramo' 'seccion', 'año', 'semestre')
+        fields = ('id', 'codigo_ramo', 'seccion', 'año', 'semestre')
+
+class CrearCursosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cursos
+        fields = ('codigo_ramo', 'seccion', 'año', 'semestre')
+
+class RamosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ramos
+        fields = ('id', 'programa', 'nombre')
+
+class CrearRamosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ramos
+        fields = ('programa', 'nombre')

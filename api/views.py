@@ -77,3 +77,59 @@ def home(request):
     return render(request, 'servidor/index.html', context)
     """
     return HttpResponse("Hello")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class CursosView(APIView):
+    serializer_class = CursosSerializer
+    def get(self, request, format=None):
+        queryset = Cursos.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+class CreateCursos(APIView):
+    serializer_class = CrearCursosSerializer
+    def post(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        
+        
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+        
+            codigo_ramo = serializer.data.get('codigo_ramo')
+            seccion = serializer.data.get('seccion')
+            año = serializer.data.get('año')
+            semestre = serializer.data.get('semestre')
+            
+            ramo = Ramos.objects.get(id=codigo_ramo)
+            #host = self.request.session.session_key
+            curso = Cursos(codigo_ramo=ramo, seccion=seccion, año=año, semestre=semestre)
+
+            
+
+            curso.save()
+
+            return Response({'msg':'El curso se ha creado correctamente', 'data': CursosSerializer(curso).data})
+        else:
+            return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
+
+
+
+
+
+
+
+
