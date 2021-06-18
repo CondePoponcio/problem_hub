@@ -16,18 +16,11 @@ RUN python -m pip install -r requirements.txt
 
 RUN python -m venv venv
 
-
-RUN git clone http://github.com/creationix/nvm.git /root/.nvm 
-
-
-RUN bash /root/.nvm/install.sh 
-
-RUN bash -i -c 'nvm install node';
-
+RUN apt-get install -y nodejs npm
 
 WORKDIR $CODIGO/frontend
 
-RUN bash -i -c 'npm install';
+RUN npm install
 
 WORKDIR $CODIGO 
 
