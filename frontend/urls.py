@@ -5,7 +5,7 @@ from .views import *
 app_name = 'frontend'
 
 urlpatterns = [
-    path('', index),
+    path('home', index),
     path('join', index),
     path('create', index),
     path('problema/<int:id>', index),

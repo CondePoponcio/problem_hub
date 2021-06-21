@@ -29,7 +29,7 @@ const Inicio = (props) => {
         
         <div className="grid">
             <div className="topBar navbar">
-                <a href={"/"} className="logo">Problem <span>Hub</span></a>
+                <a href={"/home"} className="logo">Problem <span>Hub</span></a>
 
                 <a href="#" className="inicio">Iniciar Sesión</a>
             </div>
