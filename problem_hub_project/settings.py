@@ -133,3 +133,28 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
 ]
+
+
+
+#Auth0 Configuration
+
+SOCIAL_AUTH_TRAILING_SLASH = False  # Remove trailing slash from routes
+SOCIAL_AUTH_AUTH0_DOMAIN = 'dev--c34vvj2.us.auth0.com'
+SOCIAL_AUTH_AUTH0_KEY = 'lWPquc3fnQF57JyZMCJIsbhg2vYabtTX'
+SOCIAL_AUTH_AUTH0_SECRET = 'HgbJPhJ9o4_rGMD4OwonkoaRVf1298otv3U8qjaC3XPsw2-JfCXISFK4mEjO7q_c'
+
+SOCIAL_AUTH_AUTH0_SCOPE = [
+    'openid',
+    'profile',
+    'email'
+]
+
+AUTHENTICATION_BACKENDS = {
+    'frontend.auth0backend.Auth0',
+    'django.contrib.auth.backends.ModelBackend'
+}
+
+# webappexample\settings.py
+
+LOGIN_URL = '/login/auth0'
+LOGIN_REDIRECT_URL = '/dashboard'
