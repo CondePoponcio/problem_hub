@@ -16,6 +16,7 @@ import Create from './components/Test/Create';
 import LoginButton from './components/Auth/LoginButton';
 import Inicio from './pages/Inicio';
 import Problema from './pages/Problema';
+import Problemas from './pages/Problemas';
 import Profile from './components/Profile';
 
 
@@ -28,44 +29,46 @@ import Profile from './components/Profile';
 //initFontAwesome();
 
 const App = () => {
-  const { isLoading, error } = useAuth0();
+    const { isLoading, error } = useAuth0();
 
-  if (error) {
+    if (error) {
     return <div>Oops... {error.message}</div>;
-  }
+    }
 
-  if (isLoading) {
+    if (isLoading) {
     return <h1>Cargando</h1>;
-  }
+    }
 
-  return (
-    <Router history={history}>
-      <div id="app" className="d-flex flex-column h-100">
-        {
-        //    <NavBar />
-        }
-        <Container className="flex-grow-1 mt-5">
-        <Switch>
+    return (
+        <Router history={history}>
+            <div id="app" className="d-flex flex-column h-100">
             {
-            //<Route path="/" exact component={Home} />
+            //    <NavBar />
             }
-            <Route path="/profile" component={Profile} />
-            <Route path="/external-api" component={ExternalApi} />
+            <Container className="flex-grow-1 mt-5">
+            <Switch>
+                {
+                //<Route path="/" exact component={Home} />
+                }
+                <Route path="/profile" component={Profile} />
+                <Route path="/external-api" component={ExternalApi} />
 
-            <Route exact path="/" component={LoginButton}/>
-            <Route exact path="/profile" component={Profile}/>
-            <Route exact path="/home" component={Inicio}/>
-            <Route exact path="/join" component={Room}/>
-            <Route exact path="/join1" component={Create}/>
-            <Route exact path="/problema/:id" component={Problema}/>
-        </Switch>
-        </Container>
-        {
-        //    <Footer />
-        }
-      </div>
-    </Router>
-  );
+                <Route exact path="/" component={LoginButton}/>
+                <Route exact path="/profile" component={Profile}/>
+                <Route exact path="/home" component={Inicio}/>
+                <Route exact path="/join" component={Room}/>
+                <Route exact path="/join1" component={Create}/>
+                <Route exact path="/problema/:id" component={Problema}/>
+                <Route exact path="/problemas" component={Problemas}/>
+                    
+            </Switch>
+            </Container>
+            {
+            //    <Footer />
+            }
+            </div>
+        </Router>
+    );
 };
 
 export default App;
