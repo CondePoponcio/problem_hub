@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
-from rest_framework import generics, status
+from rest_framework import generics, status, filters
 from .serializers import * 
 from .models import *
 from rest_framework.views import APIView
@@ -46,11 +46,50 @@ class ProblemasView(APIView):
         serializer = self.serializer_class(queryset, many=True)
         return Response({'data': serializer.data})
 
+class ProblemasFilterView(generics.ListAPIView):
+    serializer_class = ProblemasSerializer
+    def get(self, request, *args, **kwargs):
+        print(kwargs['data'])
+        if(kwargs['data'] != "none" and kwargs['data'] != "categoria=&dificultad=Null"):
+            print("Filtro")
+            datos = kwargs['data'].split("&")
+            cat = datos[0].replace("categoria=","")
+            dif = datos[1].replace("dificultad=","")
+            print(cat)
+            print(dif)
+            if(cat == ""):
+                queryset = Problemas.objects.all().filter(dificultad=dif)
+            elif(dif == "Null"):
+                search = Problemas.objects.all()
+                queryset = []
+                for query in search:
+                    if(cat in query.categoria):
+                        queryset.append(query)
+            else:
+                search = Problemas.objects.all().filter(dificultad=dif)
+                queryset = []
+                for query in search:
+                    if(cat in query.categoria):
+                        queryset.append(query)
+        else:
+            print("no filtro")
+            queryset = Problemas.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
 class ViewOneProblem(APIView):
     serializer_class = ProblemasSerializer
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         #id = request.query_params.get('title', None)
+        queryset = Problemas.objects.get(id=id)
+        serializer = self.serializer_class(queryset)
+        return Response({'data': serializer.data})
+
+class editProblem(generics.UpdateAPIView):
+    serializer_class = ProblemasSerializer
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs['id']
         queryset = Problemas.objects.get(id=id)
         serializer = self.serializer_class(queryset)
         return Response({'data': serializer.data})
