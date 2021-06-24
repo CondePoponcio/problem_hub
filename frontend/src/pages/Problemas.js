@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
 import Tabla from './../components/Tabla'
 import { Filtro } from "../components/Filtro";
+import TopNavBar from './../components/TopNavbar';
 
 const Inicio = (props) => {
     const [datos, setDatos] = useState([]) //datos de los problemas de la base de datos
@@ -33,11 +34,7 @@ const Inicio = (props) => {
     return(
         
         <div className="grid">
-            <div className="topBar navbar">
-                <a href={"/home"} className="logo">Problem <span>Hub</span></a>
-
-                <a href="#" className="inicio">Iniciar Sesión</a>
-            </div>
+            <TopNavBar/>
             <div className="sideBar">
                 <div>
                 </div>

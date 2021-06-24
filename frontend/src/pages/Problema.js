@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
+import './../components/TopNavbar';
 
 const Problema = (props) => {
     const [datos, setDatos] = useState([])
@@ -29,11 +30,7 @@ const Problema = (props) => {
     return(
         
         <div className="grid">
-            <div className="topBar navbar">
-                <a href={"/home"} className="logo">Problem <span>Hub</span></a>
-
-                <a href="#"  className="inicio">Iniciar Sesión</a>
-            </div>
+            <TopNavBar/>
             <div className="sideBar">
                 <div>
                 </div>
