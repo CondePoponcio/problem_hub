@@ -12,4 +12,6 @@ urlpatterns = [
     path('cursos', CursosView.as_view()),
     path('crear_curso', CreateCursos.as_view()),
     
+    path('public', public),
+    path('private', private),
 ]
