@@ -14,7 +14,7 @@ import jwt
 from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, BasePermission
+from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 
 class CheckUserCourse(BasePermission):
     """
@@ -40,7 +40,7 @@ class ProblemasView(generics.ListAPIView):
 """
 class ProblemasView(APIView):
     serializer_class = ProblemasSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckUserCourse, IsAuthenticated]
     def get(self, request, format=None):
         queryset = Problemas.objects.all()
         serializer = self.serializer_class(queryset, many=True)

@@ -1,30 +1,38 @@
 
 import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
-import './../components/TopNavbar';
+import TopNavBar from './../components/TopNavbar';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Problema = (props) => {
     const [datos, setDatos] = useState([])
+    const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
     useEffect(()=>{
-        console.log("Estos son los props:", props)
-        var id = props.match.params.id
-        console.log("URL: ", '/api/problema/',parseInt(id))
-        fetch('/api/problema/'+parseInt(id), {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => response.json())
-        .then((json) =>{
-            console.log("Hola soy : ",json);
-            //alert("Hola")
-            if(json.data){
-                setDatos(json.data)
-            }
-            
-        })
-
+        const getDataProblem = async () => {
+            console.log("Estos son los props:", props)
+            var id = props.match.params.id
+            const accessToken = await getAccessTokenSilently()
+            console.log("URL: ", '/api/problema/',parseInt(id))
+            fetch('/api/problema/'+parseInt(id), {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            }).then((response) => response.json())
+            .then((json) =>{
+                console.log("Hola soy : ",json);
+                //alert("Hola")
+                if(json.data){
+                    setDatos(json.data)
+                }
+                
+            })
+        }
+        getDataProblem();
     },[])
 
     return(
