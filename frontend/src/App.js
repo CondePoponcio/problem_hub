@@ -19,6 +19,9 @@ import Problema from './pages/Problema';
 import Problemas from './pages/Problemas';
 import Profile from './components/Profile';
 import Loading from './components/Loading';
+import crearCurso from "./pages/crearCurso";
+import crearRamo from "./pages/crearRamo";
+import agregarUsuarios from "./pages/agregarUsuarios";
 
 
 // styles
@@ -61,6 +64,16 @@ const App = () => {
                     onRedirecting: () => <Loading />,
                 })}/>
                 <Route exact path="/problemas" component={withAuthenticationRequired(Problemas, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+
+                <Route exact path="/crear_curso" component={withAuthenticationRequired(crearCurso, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/crear_ramo" component={withAuthenticationRequired(crearRamo, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/agregarUsuarios/:id" component={withAuthenticationRequired(agregarUsuarios, {
                     onRedirecting: () => <Loading />,
                 })}/>
                     
