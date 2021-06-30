@@ -8,7 +8,7 @@ class ProblemasSerializer(serializers.ModelSerializer):
 class CrearProblemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problemas
-        fields = ('titulo', 'categoria', 'dificultad', 'enunciado', 'casos_prueba', 'origen', 'curso_id')
+        fields = ('titulo', 'categoria', 'dificultad', 'enunciado', 'casos_prueba', 'origen')
     
 
 class CursosSerializer(serializers.ModelSerializer):
@@ -31,4 +31,14 @@ class RamosSerializer(serializers.ModelSerializer):
 class CrearRamosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ramos
-        fields = ('programa', 'nombre')
+        fields = ('id', 'programa', 'nombre')
+
+class UsuariosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuarios
+        field = ('id', 'nombre', 'apellido', 'correo', 'contraseña')
+
+class MiembroCursoSereializer(serializers.ModelSerializer):
+    class Meta:
+        model = miembros_curso
+        field = ('usuario_id', 'curso_id', 'tipo')

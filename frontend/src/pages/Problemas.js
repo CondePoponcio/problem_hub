@@ -3,9 +3,13 @@ import './../../static/css/inicio.css'
 import Tabla from './../components/Tabla'
 import { Filtro } from "../components/Filtro";
 import TopNavBar from './../components/TopNavbar';
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 const Inicio = (props) => {
     const [datos, setDatos] = useState([]) //datos de los problemas de la base de datos
+    const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
+
     if(props.location.search != ""){
         var data = props.location.search
         data = data.replace("?", "")
