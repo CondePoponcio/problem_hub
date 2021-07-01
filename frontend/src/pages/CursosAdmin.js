@@ -32,7 +32,6 @@ const CursosAdmin = (props) => {
     return(
         
         <div className="grid">
-            <NavAdmin/>
             <div className="sideBar">
                 <div>
                 </div>

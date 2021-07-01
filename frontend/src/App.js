@@ -67,7 +67,6 @@ const App = () => {
                     <Redirect from="/" to="dashboard" />
                 </Route>
 
-<<<<<<< HEAD
                 <Route exact path="/crear_curso" component={withAuthenticationRequired(crearCurso, {
                     onRedirecting: () => <Loading />,
                 })}/>
@@ -86,10 +85,8 @@ const App = () => {
                 <Route exact path="/scraper" component={withAuthenticationRequired(scraper, {
                     onRedirecting: () => <Loading />,
                 })}/>
-=======
                     */
                 }
->>>>>>> 396787dfab917c4008ea934a5934e631f4a07424
                     
             </Switch>
             </Container>

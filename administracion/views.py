@@ -153,6 +153,7 @@ class agregarMiembros(APIView):
     def post(self, request, format=None):
         data = request.data["usuarios"]
         correos = data.split(",")
+        print(request.data["curso_id"])
         for correo in correos:
             queryset = Usuarios.objects.get(correo=correo)
             serializer = UsuariosSerializer(queryset)
@@ -173,7 +174,6 @@ class agregarUsuario(APIView):
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
-        print(request.data)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             nombres = serializer.data.get('nombres')

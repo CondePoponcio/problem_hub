@@ -18,12 +18,6 @@ urlpatterns = [
     path('dashboard/crear_ramo', index),
     path('dashboard/agregarUsuarios', index),
     path('cursosAdmin',index),
-<<<<<<< HEAD
     path('cursoAdmin/<int:id>',index),
     path('scraper',index),
-
-
-=======
-    path('cursoAdmin/<int:id>',index)
->>>>>>> 396787dfab917c4008ea934a5934e631f4a07424
 ]
