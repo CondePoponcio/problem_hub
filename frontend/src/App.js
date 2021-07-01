@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import { Container } from "reactstrap";
 
 //import Loading from "./components/Loading";
@@ -21,7 +21,7 @@ import Profile from './components/Profile';
 import Loading from './components/Loading';
 import crearCurso from "./pages/crearCurso";
 import crearRamo from "./pages/crearRamo";
-
+import DashBoard from "./pages/DashBoard";
 
 // styles
 //import "./App.css";
@@ -43,45 +43,30 @@ const App = () => {
 
     return (
         <Router history={history}>
-            <div id="app" className="d-flex flex-column h-100">
-            {
-            //    <NavBar />
-            }
+            
+            
             <Container className="flex-grow-1 mt-5">
             <Switch>
 
                 <Route exact path="/" component={LoginButton}/>
-                <Route exact path="/profile" component={withAuthenticationRequired(Profile, {
+                <Route path="/dashboard" component={withAuthenticationRequired(DashBoard, {
                     onRedirecting: () => <Loading />,
                 })}/>
-                <Route exact path="/home" component={withAuthenticationRequired(Inicio, {
-                    onRedirecting: () => <Loading />,
-                })}/>
-                <Route exact path="/join" component={Room}/>
-                <Route exact path="/join1" component={Create}/>
-                <Route exact path="/problema/:id" component={withAuthenticationRequired(Problema, {
-                    onRedirecting: () => <Loading />,
-                })}/>
-                <Route exact path="/problemas" component={withAuthenticationRequired(Problemas, {
-                    onRedirecting: () => <Loading />,
-                })}/>
+                <Route path="*">
+                      <Redirect from="/" to="dashboard" />
+                </Route>
+                {
+                    /*
+                                    <Route exact path="*">
+                    <Redirect from="/" to="dashboard" />
+                </Route>
 
-                <Route exact path="/crear_curso" component={withAuthenticationRequired(crearCurso, {
-                    onRedirecting: () => <Loading />,
-                })}/>
-                <Route exact path="/crear_ramo" component={withAuthenticationRequired(crearRamo, {
-                    onRedirecting: () => <Loading />,
-                })}/>
-                <Route exact path="/agregarUsuarios/:id" component={withAuthenticationRequired(agregarUsuarios, {
-                    onRedirecting: () => <Loading />,
-                })}/>
+                    */
+                }
                     
             </Switch>
             </Container>
-            {
-            //    <Footer />
-            }
-            </div>
+            
         </Router>
     );
 };

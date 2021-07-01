@@ -21,11 +21,34 @@ class CheckUserCourse(BasePermission):
     Global permission check for blocked IPs.
     """
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view, *args, **kwargs):
         #ip_addr = request.META['REMOTE_ADDR']
         #blocked = Blocklist.objects.filter(ip_addr=ip_addr).exists()
         #return not blocked
+        
+        
         return True
+        
+        curso_id = self.kwargs['id']
+        print("Pelado: ", curso_id)
+        if curso_id is None:
+            return False
+        cursos = Cursos.objects.get(id=curso_id)
+        if cursos is None:
+            return False
+        alu_cursos = miembros_curso.objects.get(curso_id=cursos.id)
+        if alu_cursos is None:
+            return False
+        usuario = Usuarios.objects.get(id=alu_cursos.usuario_id)
+        if usuario:
+            return True
+        else:
+            return False
+
+        
+        
+
+
 
 # Create your views here.
 

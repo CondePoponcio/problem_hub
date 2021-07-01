@@ -9,8 +9,6 @@ const TopNavBar = (props) => {
     return(
         
         <div className="topBar navbar">
-            <a href={"/home"} className="logo">Problem <span>Hub</span></a>
-
             {!isAuthenticated?(<a href={"/"}  className="inicio">Iniciar Sesión</a>):(<img src={user.picture} alt={user.name} />)}
         </div>
 
