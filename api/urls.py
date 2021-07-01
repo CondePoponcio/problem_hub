@@ -13,6 +13,7 @@ urlpatterns = [
     path('problema/edit/<int:id>', editProblem.as_view()),
     path('cursos', CursosView.as_view()),
     path('crear_curso', CreateCursos.as_view()),
+    path('dermacne', apidermacne),
     
     path('public', public),
     path('private', private),
