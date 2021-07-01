@@ -15,7 +15,7 @@ then
 elif [ "$cat" = "Brute+force" ]
 then
     cat_top="Brute+Force"
-    cat_top="brute+force"
+    cat_force="brute+force"
 elif [ "$cat" = "Dynamic+Programming"] 
 then
     cat_top="Dynamic+Programming"

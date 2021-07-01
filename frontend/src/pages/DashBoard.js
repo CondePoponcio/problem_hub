@@ -28,6 +28,7 @@ import CursoAdmin from "./CursoAdmin";
 import NotFound from "./404";
 import IndexDashBoard from "./../components/IndexDashBoard";
 import TopNavBar from './../components/TopNavbar'; 
+import scraper from "./scraper";
 // styles
 //import "./App.css";
 
@@ -77,6 +78,8 @@ const DashBoard = (props) => {
                     <li className="sidenav__list-item"><Link to={`${match.path}/profile`}>profile</Link></li>
                     <li className="sidenav__list-item"><Link to={`${match.path}/crear_curso`}>Crear Curso</Link></li>
                     <li className="sidenav__list-item"><Link to={`${match.path}/crear_ramo`}>Crear Ramo</Link></li>
+                    <li className="sidenav__list-item"><Link to={`${match.path}/cursosAdmin`}>Cursos Admin</Link></li>
+                    <li className="sidenav__list-item"><Link to={`${match.path}/scraper`}>Web Scraping</Link></li>
                     </ul>
                 </aside>
 
@@ -111,6 +114,9 @@ const DashBoard = (props) => {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}/cursoAdmin/:id`} component={withAuthenticationRequired(CursoAdmin, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/scraper`} component={withAuthenticationRequired(scraper, {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}`} component={withAuthenticationRequired(IndexDashBoard, {

@@ -12,7 +12,8 @@ const NavAdmin = (props) => {
             <a href={"/crear_ramo"} className="CrearRamos">Crear Ramo</a>
             <a href={"/crear_curso"} className="CrearCurso">Crear Curso</a>
             <a href={"/cursosAdmin"} className="Cursos">Curso</a>
-            <a href={"/agregarUsuarios"} className="agregarUsuarios">Crear Usuario</a>         
+            <a href={"/agregarUsuarios"} className="agregarUsuarios">Crear Usuario</a>
+            <a href={"/scraper"} className="call_scrapy">WebScraping</a>              
             {!isAuthenticated?(<a href={"/"}  className="inicio">Iniciar Sesión</a>):(<img src={user.picture} alt={user.name} />)}
         </div>
 

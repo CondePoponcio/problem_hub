@@ -60,7 +60,6 @@ const Problema = (props) => {
     return(
         
         <div className="grid">
-            <TopNavBar/>
             <div className="sideBar">
                 <div>
                 </div>

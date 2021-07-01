@@ -15,6 +15,7 @@ from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
+import os
 
 class CheckUserCourse(BasePermission):
     """
@@ -152,6 +153,7 @@ class agregarMiembros(APIView):
     def post(self, request, format=None):
         data = request.data["usuarios"]
         correos = data.split(",")
+        print(request.data["curso_id"])
         for correo in correos:
             queryset = Usuarios.objects.get(correo=correo)
             serializer = UsuariosSerializer(queryset)
@@ -172,7 +174,6 @@ class agregarUsuario(APIView):
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
-        print(request.data)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             nombres = serializer.data.get('nombres')
@@ -185,3 +186,15 @@ class agregarUsuario(APIView):
             return Response({'msg':'El usario se ha creado correctamente', 'data': UsuariosSerializer(usuario).data})
         else:
             return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
+
+class Scraper(APIView):
+    permission_classes = [CheckUserCourse]
+    def post(self, request, *args, **kwargs):
+        categoria = request.data["categoria"]
+        dificultad = request.data["dificultad"]
+        call_scrapy(categoria,dificultad)
+        return Response({'msg':'Buscando ejercicios'})
+
+def call_scrapy(categoria, dificultad):
+    run = '/home/problem_hub/Scrapy/run.sh '+categoria+' '+dificultad
+    os.system(run)

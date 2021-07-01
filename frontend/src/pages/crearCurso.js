@@ -40,14 +40,14 @@ const crearCurso = (props) => {
             method: "POST",
             headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`},
             body: JSON.stringify({
-                'codigo_ramo':e.target[1]["value"], 'seccion':e.target[2]["value"], 'año':e.target[4]["value"], 'semestre':e.target[3]["value"], 'usuarios':e.target[4]["value"]
+                'codigo_ramo':e.target[1]["value"], 'seccion':e.target[2]["value"], 'año':e.target[4]["value"], 'semestre':e.target[3]["value"]
             }),
         };
         fetch('/administracion/crear_curso', requestOptions).then((response) => response.json())
         .then((json) =>{
             console.log("Boton : ",json); 
             setCurso(json.data)
-            setShow(!show)
+            agregarUsuarios(e)
         })
         
     }
@@ -59,7 +59,7 @@ const crearCurso = (props) => {
             method: "POST",
             headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`},
             body: JSON.stringify({
-                'usuarios':e.target[1]["value"], 'curso_id':curso.id
+                'usuarios':e.target[5]["value"], 'curso_id':curso.id
             }),
         };
         fetch('/administracion/agregar_miembros', requestOptions).then((response) => response.json())
@@ -73,7 +73,6 @@ const crearCurso = (props) => {
     return(
         
         <div className="grid">
-            <NavAdmin/>
             <div className="sideBar">
                 <div>
                 </div>
@@ -84,48 +83,28 @@ const crearCurso = (props) => {
                     
                 </div>
             </div>
-            {show ? (
                 <div className="content">
                     <form method="POST" onSubmit={(event)=>{agregarCurso(event)}}>
                         <CSRFToken />
+                        <p>Ramo:</p>
                         <select name="codigo_ramo">
                             <option key="NULL" value="NULL">NULL</option>
                             {datos.map((row) => (
                                 <option key={row.id} value={row.id}>{row.nombre}</option>
                             ))}
                         </select>
-                        <input name="seccion" type="text" placeholder="Ingresar Seccion"></input>
-                        <input name="semestre" type="text" placeholder="Ingresar Semestres"></input>
-                        <input name="año" type="text" placeholder="Ingresar Año"></input>
-                        <br></br>
+                        <p>Ingrese Sección:</p>
+                        <input name="seccion" type="text" placeholder="Ingresar Sección"/>
+                        <p>Ingrese Semestre:</p>
+                        <input name="semestre" type="text" placeholder="Ingresar Semestres"/>
+                        <p>Ingrese Año:</p>
+                        <input name="año" type="text" placeholder="Ingresar Año"/>
                         <p>Ingrese los mails de los usuarios con comas entre medio:</p>
                         <textarea name="usuarios"></textarea>
+                        <br/>
                         <button type="submit">Agregar</button>
                     </form>             
                 </div>
-            ) : (
-                <div className="content">
-                    <form>
-                        <CSRFToken />
-                        <select name="codigo_ramo">
-                            <option key="NULL" value="NULL">NULL</option>
-                            {datos.map((row) => (
-                                <option key={row.id} value={row.id}>{row.nombre}</option>
-                            ))}
-                        </select>
-                        <input name="seccion" type="text" placeholder="Ingresar Seccion" disabled></input>
-                        <input name="semestre" type="text" placeholder="Ingresar Semestres" disabled></input>
-                        <input name="año" type="text" placeholder="Ingresar Año" disabled></input>
-                    </form>
-                    <br></br>
-                    <p>Ingrese los mails de los usuarios con comas entre medio:</p>
-                    <form method="POST" onSubmit={(event)=>{agregarUsuarios(event)}}>
-                        <CSRFToken />
-                        <textarea name="usuarios"></textarea>
-                        <button type="submit">Agregar</button>
-                    </form>                
-                </div>
-            )}
         </div>
 
     )

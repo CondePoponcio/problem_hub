@@ -25,6 +25,7 @@ import DashBoard from "./pages/DashBoard";
 import agregarUsuarios from "./pages/agregarUsuarios";
 import CursosAdmin from "./pages/CursosAdmin";
 import CursoAdmin from "./pages/CursoAdmin";
+import scraper from "./pages/scraper";
 
 
 
@@ -66,6 +67,24 @@ const App = () => {
                     <Redirect from="/" to="dashboard" />
                 </Route>
 
+                <Route exact path="/crear_curso" component={withAuthenticationRequired(crearCurso, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/crear_ramo" component={withAuthenticationRequired(crearRamo, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/agregarUsuarios" component={withAuthenticationRequired(agregarUsuarios, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/cursosAdmin" component={withAuthenticationRequired(CursosAdmin, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/cursoAdmin/:id" component={withAuthenticationRequired(CursoAdmin, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/scraper" component={withAuthenticationRequired(scraper, {
+                    onRedirecting: () => <Loading />,
+                })}/>
                     */
                 }
                     
