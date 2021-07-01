@@ -80,32 +80,28 @@ body *{
 
 
 .topBar{
+    width: 100%;
     grid-column: 1 / -1;
     background-color: #FFF;
     max-height: 80px;
     display: flex;
     justify-content: space-between;
+    flex-direction: row-reverse;
     align-items: center;
     padding: 0 2rem;
     border-bottom: 1px solid rgb(180, 177, 177);
 }
-
-.topBar > .logo{
-    font-size: 2rem;
-    color: rgb(36, 51, 50);
-    text-decoration: none;
-    margin: 2em 0;
-}
-.topBar  span{
-    border-radius: 8px;
-    background-color: rgb(26, 173, 173);
-    color: #FFF;
-    padding: 5px;
+.topBar > .inicio, .topBar > img{
+    justify-self: end;
 }
 .topBar > .inicio{
     text-decoration: none;
     color: rgb(36, 51, 50);
     font-size: 1rem;
+}
+.topBar > img{
+    border-radius: 50%;
+
 }
 .sideBar{
     background-color: #2D3B45;

@@ -221,6 +221,8 @@ def home(request):
 
 
 
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def apidermacne(request):
