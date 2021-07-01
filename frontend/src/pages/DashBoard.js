@@ -93,14 +93,22 @@ const DashBoard = (props) => {
                         <Route path={`${match.path}/problemas`} component={withAuthenticationRequired(Problemas, {
                             onRedirecting: () => <Loading />,
                         })}/>
-
                         <Route path={`${match.path}/crear_curso`} component={withAuthenticationRequired(crearCurso, {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}/crear_ramo`} component={withAuthenticationRequired(crearRamo, {
                             onRedirecting: () => <Loading />,
                         })}/>
-                        <Route exact path={`${match.path}`} component={withAuthenticationRequired(IndexDashBoard, {
+                        <Route path={`${match.path}/agregarUsuarios`} component={withAuthenticationRequired(agregarUsuarios, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/cursosAdmin`} component={withAuthenticationRequired(CursosAdmin, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/cursoAdmin/:id`} component={withAuthenticationRequired(CursoAdmin, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}`} component={withAuthenticationRequired(IndexDashBoard, {
                             onRedirecting: () => <Loading />,
                         })}/>
 

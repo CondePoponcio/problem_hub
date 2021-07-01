@@ -22,6 +22,11 @@ import Loading from './components/Loading';
 import crearCurso from "./pages/crearCurso";
 import crearRamo from "./pages/crearRamo";
 import DashBoard from "./pages/DashBoard";
+import agregarUsuarios from "./pages/agregarUsuarios";
+import CursosAdmin from "./pages/CursosAdmin";
+import CursoAdmin from "./pages/CursoAdmin";
+
+
 
 // styles
 //import "./App.css";

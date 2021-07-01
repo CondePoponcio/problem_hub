@@ -205,6 +205,14 @@ class UsuariosView(APIView):
         serializer = self.serializer_class(queryset, many=True)
         return Response({'data': serializer.data})
 
+class MiembrosView(APIView):
+    serializer_class = MiembroCursoSerializer
+    permission_classes = [AllowAny]
+    def get(self, request, format=None):
+        queryset = miembros_curso.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
 
 
 def home(request):

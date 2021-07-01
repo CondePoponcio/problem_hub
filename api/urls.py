@@ -17,6 +17,8 @@ urlpatterns = [
     path('curso/<int:id>', ViewOneCurso.as_view()),
 
     path('usuarios', UsuariosView.as_view()),
+    path('miembros', MiembrosView.as_view()),
+
 
 
     
