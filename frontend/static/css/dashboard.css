@@ -5,7 +5,7 @@
 
 
 
-li{
+a{
     text-decoration: none;
 }
 
@@ -31,26 +31,27 @@ li{
   }
   
   .home_logo {
+    margin-top: 5px;
+    position: fixed;
     grid-row-start: 1;
     grid-column-start: 1;
-    display: flex;
     top: 5px;
-    left: 10px;
     align-items: center;
     justify-content: center;
-    background-color: #DADAE3;
-    border-radius: 50%;
     z-index: 2;
     cursor: pointer;
     padding: 12px;
+    color: #FFF;
     transform: translateX(-245px);
+    transition: all .6s ease-in-out;
+    
   }
   .home_logo.active {
     transform: translateX(0);
   }
   .home_logo > .logo{
     font-size: 2rem;
-    color: rgb(36, 51, 50);
+    color: #FFF;
     text-decoration: none;
 }
 .home_logo  span{
@@ -86,7 +87,7 @@ li{
     transition: all .6s ease-in-out;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
     z-index: 1; /* Needs to sit above the hamburger menu icon */
-    background-color: #394263;
+    background-color: #2D3B45;
   }
   
   .sidenav.active {
@@ -212,6 +213,7 @@ li{
 
     .home_logo {
         position: relative;
+        display: flex;
         transform: translateX(0);
     }
   

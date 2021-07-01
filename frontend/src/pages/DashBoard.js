@@ -122,12 +122,7 @@ const DashBoard = (props) => {
                 </main>
 
                 <footer className="footer">
-                    {
-                        //<div className="footer__copyright">&copy; 2021 MTH</div>
-                    }
-                    {
-                        //<div className="footer__signature">Made with love by pure genius</div>
-                    }
+                    
                 </footer>
             </div>
             
