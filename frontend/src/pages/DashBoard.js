@@ -122,7 +122,38 @@ const DashBoard = (props) => {
                 </main>
 
                 <footer className="footer">
-                    
+                    <div class="footer-content">
+                        <div id="item-1">
+                            <h4>
+
+                            </h4>
+                            <p>2 32207345/344</p>
+                            <p>contacto@dermacné.cl</p>
+                            <p>Lo Fontecilla 101, torre A, oficina 613, Las Condes, Santiago. </p>
+                        </div>
+                        <div id="item-2">
+                            <p><a href="/TerminosyCondiciones">Términos y condiciones del servicio</a></p>
+                            
+                            <p><a href="/FaQ">Preguntas frecuentes</a></p>
+                        </div>
+                        <div id="item-3">
+                            <h4>
+                                Síguenos
+                            </h4>
+                            <ul>
+                                <li><i class="fab fa-facebook"></i></li>
+                                <li><i class="fab fa-twitter"></i></li>
+                                <li><i class="fab fa-instagram"></i></li>
+                                <li><i class="fab fa-youtube"></i></li>
+                            </ul>
+                            <button onclick="window.location.href='#';">Escríbenos</button>
+                        </div>
+                    </div>
+                    <div id="item-4">
+                        <p><a href="/login-medic">Inicio de sesión médicos</a></p>
+                            
+                        <p><a href="/login-admin">Inicio de sesión para Administradores</a></p>
+                    </div>
                 </footer>
             </div>
             
