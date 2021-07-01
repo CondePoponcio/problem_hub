@@ -73,7 +73,7 @@ const App = () => {
                 <Route exact path="/crear_ramo" component={withAuthenticationRequired(crearRamo, {
                     onRedirecting: () => <Loading />,
                 })}/>
-                <Route exact path="/agregarUsuarios/:id" component={withAuthenticationRequired(agregarUsuarios, {
+                <Route exact path="/agregarUsuarios" component={withAuthenticationRequired(agregarUsuarios, {
                     onRedirecting: () => <Loading />,
                 })}/>
                     
