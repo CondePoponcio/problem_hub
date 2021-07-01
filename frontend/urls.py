@@ -17,7 +17,7 @@ urlpatterns = [
     path('dashboard/crear_curso', index),
     path('dashboard/crear_ramo', index),
     path('dashboard/agregarUsuarios', index),
-    path('cursosAdmin',index),
-    path('cursoAdmin/<int:id>',index),
-    path('scraper',index),
+    path('dashboard/cursosAdmin',index),
+    path('dashboard/cursoAdmin/<int:id>',index),
+    path('dashboard/scraper',index),
 ]

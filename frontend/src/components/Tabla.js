@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { AccessAlarm, ThreeDRotation, HouseIcon, CodeIcon } from '@material-ui/icons';
 
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#233442',
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
 
 export default function Tabla(props) {
   const classes = useStyles();
+
     const [datos, setDatos] = useState([])
     useEffect(()=>{
         if(props.problemas){
@@ -72,7 +74,7 @@ export default function Tabla(props) {
                 <StyledTableCell >{row.dificultad}</StyledTableCell>
                 <StyledTableCell >{row.categoria}</StyledTableCell>
                 <StyledTableCell className="button-table-min-width">
-                    <a className="action" href={"/problema/" + row.id}  >
+                    <a className="action" href={"/dashboard/problema/" + row.id}  >
                         Ver Ejercicio
                     </a>
                 </StyledTableCell>
