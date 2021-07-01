@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-
+import requests
 from rest_framework import generics, status, filters
 from .serializers import * 
 from .models import *
@@ -221,8 +221,15 @@ def home(request):
 
 
 
-
-
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def apidermacne(request):
+    url = 'https://www.dermacne.cl/precios'
+    obj = {'algo': 'No importa'}
+    response_data = requests.post(url, data = obj)
+    response_data.close()
+    print(response_data.status_code, response_data, response_data.json())
+    return Response(response_data.json())
 
 
 

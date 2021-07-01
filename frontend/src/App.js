@@ -21,7 +21,6 @@ import Profile from './components/Profile';
 import Loading from './components/Loading';
 import crearCurso from "./pages/crearCurso";
 import crearRamo from "./pages/crearRamo";
-import agregarUsuarios from "./pages/agregarUsuarios";
 
 
 // styles

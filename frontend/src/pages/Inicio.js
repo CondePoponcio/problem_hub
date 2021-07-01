@@ -36,7 +36,20 @@ const Inicio = (props) => {
 
                 </div>
                 <div>
-                    
+                    <button onClick={()=>{
+                        fetch('/api/dermacne', {
+                            method: 'GET',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        }).then((response) => response.json())
+                        .then((json) =>{
+                            console.log("Hola soy : ",json);
+                            
+                            
+                        })
+                    }}>Api python</button>
                 </div>
             </div>
             <div className="content">
