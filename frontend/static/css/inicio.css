@@ -103,10 +103,7 @@ body *{
     border-radius: 50%;
 
 }
-.sideBar{
-    background-color: #2D3B45;
-    max-width: 100%;
-}
+
 
 @media(max-width: 719px){
     .content{
@@ -116,9 +113,6 @@ body *{
     }
     .grid{
         grid-template-columns: repeat(4, 1fr);
-    }
-    .sideBar{
-        display: none;
     }
     .botonBar{
         display: flex;
@@ -133,9 +127,6 @@ body *{
     }
     .grid{
         grid-template-columns: repeat(8, 1fr);
-    }
-    .sideBar{
-        grid-column: 1/2;
     }
     .botonBar{
         display: none;
@@ -152,9 +143,6 @@ body *{
     }
     .grid{
         grid-template-columns: repeat(12, 1fr);
-    }
-    .sideBar{
-        grid-column: 1/2;
     }
     .botonBar{
         display: none;
