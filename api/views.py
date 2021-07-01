@@ -183,7 +183,7 @@ class UsuariosView(APIView):
         return Response({'data': serializer.data})
 
 class MiembrosView(APIView):
-    serializer_class = MiembroCursoSereializer
+    serializer_class = MiembroCursoSerializer
     permission_classes = [AllowAny]
     def get(self, request, format=None):
         queryset = miembros_curso.objects.all()

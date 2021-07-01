@@ -3,12 +3,15 @@ import './../../static/css/inicio.css'
 import TopNavBar from './../components/TopNavbar';
 import { useAuth0 } from "@auth0/auth0-react";
 import CSRFToken from "../components/csrftoken"
+import NavAdmin from "../components/NavAdmin";
 
 
 const crearCurso = (props) => {
     const [datos, setDatos] = useState([]) 
     const [curso, setCurso] = useState([])
-    const [show, setShow] = useState(false)
+    const [usuarios, setUsuarios] = useState([])
+    const [show, setShow] = useState(true)
+    const [show2, setShow2] = useState(true)
     const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
 
     useEffect(()=>{
@@ -26,6 +29,7 @@ const crearCurso = (props) => {
                 setDatos(json.data)
             }  
         })
+        
 
     },[])
 
@@ -36,7 +40,7 @@ const crearCurso = (props) => {
             method: "POST",
             headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`},
             body: JSON.stringify({
-                'codigo_ramo':e.target[1]["value"], 'seccion':e.target[2]["value"], 'año':e.target[4]["value"], 'semestre':e.target[3]["value"]
+                'codigo_ramo':e.target[1]["value"], 'seccion':e.target[2]["value"], 'año':e.target[4]["value"], 'semestre':e.target[3]["value"], 'usuarios':e.target[4]["value"]
             }),
         };
         fetch('/administracion/crear_curso', requestOptions).then((response) => response.json())
@@ -45,6 +49,7 @@ const crearCurso = (props) => {
             setCurso(json.data)
             setShow(!show)
         })
+        
     }
     
     const agregarUsuarios = async (e) => {
@@ -59,7 +64,8 @@ const crearCurso = (props) => {
         };
         fetch('/administracion/agregar_miembros', requestOptions).then((response) => response.json())
         .then((json) =>{
-            console.log("Boton : ",json);      
+            console.log("Boton : ",json);
+            setUsuarios(json.data)      
         })
     }
 
@@ -67,7 +73,7 @@ const crearCurso = (props) => {
     return(
         
         <div className="grid">
-            <TopNavBar/>
+            <NavAdmin/>
             <div className="sideBar">
                 <div>
                 </div>
@@ -91,6 +97,9 @@ const crearCurso = (props) => {
                         <input name="seccion" type="text" placeholder="Ingresar Seccion"></input>
                         <input name="semestre" type="text" placeholder="Ingresar Semestres"></input>
                         <input name="año" type="text" placeholder="Ingresar Año"></input>
+                        <br></br>
+                        <p>Ingrese los mails de los usuarios con comas entre medio:</p>
+                        <textarea name="usuarios"></textarea>
                         <button type="submit">Agregar</button>
                     </form>             
                 </div>
@@ -108,9 +117,11 @@ const crearCurso = (props) => {
                         <input name="semestre" type="text" placeholder="Ingresar Semestres" disabled></input>
                         <input name="año" type="text" placeholder="Ingresar Año" disabled></input>
                     </form>
+                    <br></br>
+                    <p>Ingrese los mails de los usuarios con comas entre medio:</p>
                     <form method="POST" onSubmit={(event)=>{agregarUsuarios(event)}}>
                         <CSRFToken />
-                        <textarea name="Usuarios"></textarea>
+                        <textarea name="usuarios"></textarea>
                         <button type="submit">Agregar</button>
                     </form>                
                 </div>

@@ -33,12 +33,22 @@ class CrearRamosSerializer(serializers.ModelSerializer):
         model = Ramos
         fields = ('id', 'programa', 'nombre')
 
+class MostrarCursosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cursos, Ramos
+        fields = ('id', 'nombre', 'codigo_ramo', 'seccion', 'año', 'semestre', 'programa')
+
+class MostrarUsuariosCurso(serializers.ModelSerializer):
+    class Meta:
+        model = Usuarios, miembros_curso
+        fields = ('id', 'curso_id', 'tipo', 'nombres', 'apellidos')
+
 class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        field = ('id', 'nombre', 'apellido', 'correo', 'contraseña')
+        fields = ('id', 'nombres', 'apellidos', 'correo', 'contraseña')
 
-class MiembroCursoSereializer(serializers.ModelSerializer):
+class MiembroCursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = miembros_curso
-        field = ('usuario_id', 'curso_id', 'tipo')
+        fields = ('usuario_id', 'curso_id', 'tipo')

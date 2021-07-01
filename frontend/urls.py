@@ -12,9 +12,13 @@ urlpatterns = [
     path('create', index),
     path('profile', index),
     path('problema/<int:id>', index),
+
+    #ADMIN
     path('crear_curso', index),
-    path('agregarUsuarios/<int:id>', index),
+    path('agregarUsuarios', index),
     path('crear_ramo', index),
+    path('cursosAdmin',index),
+    path('cursoAdmin/<int:id>',index)
 
 
 ]

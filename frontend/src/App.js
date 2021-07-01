@@ -21,6 +21,10 @@ import Profile from './components/Profile';
 import Loading from './components/Loading';
 import crearCurso from "./pages/crearCurso";
 import crearRamo from "./pages/crearRamo";
+import agregarUsuarios from "./pages/agregarUsuarios";
+import CursosAdmin from "./pages/CursosAdmin";
+import CursoAdmin from "./pages/CursoAdmin";
+
 
 
 // styles
@@ -73,6 +77,12 @@ const App = () => {
                     onRedirecting: () => <Loading />,
                 })}/>
                 <Route exact path="/agregarUsuarios" component={withAuthenticationRequired(agregarUsuarios, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/cursosAdmin" component={withAuthenticationRequired(CursosAdmin, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/cursoAdmin/:id" component={withAuthenticationRequired(CursoAdmin, {
                     onRedirecting: () => <Loading />,
                 })}/>
                     
