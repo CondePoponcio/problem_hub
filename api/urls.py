@@ -12,7 +12,6 @@ urlpatterns = [
     path('problema/<int:id>', ViewOneProblem.as_view()),
     path('problema/edit/<int:id>/<str:data>', editProblem.as_view()),
     path('cursos', CursosView.as_view()),
-    path('crear_curso', CreateCursos.as_view()),
     path('dermacne', apidermacne),
     path('ramos', RamoView.as_view()),
     path('curso/<int:id>', ViewOneCurso.as_view()),
