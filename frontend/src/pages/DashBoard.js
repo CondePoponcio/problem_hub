@@ -21,6 +21,10 @@ import Profile from '.././components/Profile';
 import Loading from '.././components/Loading';
 import crearCurso from ".././pages/crearCurso";
 import crearRamo from ".././pages/crearRamo";
+import agregarUsuarios from "./agregarUsuarios";
+import CursosAdmin from "./CursosAdmin";
+import CursoAdmin from "./CursoAdmin";
+
 import NotFound from "./404";
 import IndexDashBoard from "./../components/IndexDashBoard";
 import TopNavBar from './../components/TopNavbar'; 
@@ -46,10 +50,11 @@ const DashBoard = (props) => {
         <Router history={history}>
             
             <div className="grid-container">
-                <div className="menu-icon">
+                <div className="home_logo">
                     <i className="fas fa-bars header__menu"></i>
-                </div>
+                    <a href={"/home"} className="logo">Problem <span>Hub</span></a>
                 
+                </div>
                 <header className="header">
                     {
                         /*

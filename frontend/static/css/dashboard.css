@@ -8,6 +8,8 @@
 li{
     text-decoration: none;
 }
+
+
 .grid-container {
     margin: 0;
     padding: 0;
@@ -28,8 +30,9 @@ li{
     height: 100vh;
   }
   
-  .menu-icon {
-    position: fixed; /* Needs to stay visible for all mobile scrolling */
+  .home_logo {
+    grid-row-start: 1;
+    grid-column-start: 1;
     display: flex;
     top: 5px;
     left: 10px;
@@ -37,11 +40,25 @@ li{
     justify-content: center;
     background-color: #DADAE3;
     border-radius: 50%;
-    z-index: 1;
+    z-index: 2;
     cursor: pointer;
     padding: 12px;
+    transform: translateX(-245px);
   }
-  
+  .home_logo.active {
+    transform: translateX(0);
+  }
+  .home_logo > .logo{
+    font-size: 2rem;
+    color: rgb(36, 51, 50);
+    text-decoration: none;
+}
+.home_logo  span{
+    border-radius: 8px;
+    background-color: rgb(26, 173, 173);
+    color: #FFF;
+    padding: 5px;
+}
   /* Give every child element its grid name */
   .header {
     grid-area: header;
@@ -68,7 +85,7 @@ li{
     transform: translateX(-245px);
     transition: all .6s ease-in-out;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-    z-index: 2; /* Needs to sit above the hamburger menu icon */
+    z-index: 1; /* Needs to sit above the hamburger menu icon */
     background-color: #394263;
   }
   
@@ -191,6 +208,11 @@ li{
     .sidenav {
       position: relative;
       transform: translateX(0);
+    }
+
+    .home_logo {
+        position: relative;
+        transform: translateX(0);
     }
   
     .sidenav__close-icon {
