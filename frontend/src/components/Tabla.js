@@ -65,7 +65,7 @@ export default function Tabla(props) {
             </TableHead>
             <TableBody>
             {datos.map((row) => (
-                <StyledTableRow key={row.titulo} >
+                <StyledTableRow key={row.id} >
                 <StyledTableCell>
                     {row.titulo}
                 </StyledTableCell>

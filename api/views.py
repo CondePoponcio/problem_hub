@@ -40,7 +40,7 @@ class ProblemasView(generics.ListAPIView):
 """
 class ProblemasView(APIView):
     serializer_class = ProblemasSerializer
-    permission_classes = [CheckUserCourse, IsAuthenticated]
+    permission_classes = [CheckUserCourse]
     def get(self, request, format=None):
         queryset = Problemas.objects.all()
         serializer = self.serializer_class(queryset, many=True)
@@ -48,6 +48,7 @@ class ProblemasView(APIView):
 
 class ProblemasFilterView(generics.ListAPIView):
     serializer_class = ProblemasSerializer
+    permission_classes = [CheckUserCourse]
     def get(self, request, *args, **kwargs):
         print(kwargs['data'])
         if(kwargs['data'] != "none" and kwargs['data'] != "categoria=&dificultad=Null"):
@@ -58,27 +59,28 @@ class ProblemasFilterView(generics.ListAPIView):
             print(cat)
             print(dif)
             if(cat == ""):
-                queryset = Problemas.objects.all().filter(dificultad=dif)
+                queryset = Problemas.objects.all().filter(dificultad=dif).order_by('titulo')
             elif(dif == "Null"):
-                search = Problemas.objects.all()
+                search = Problemas.objects.all().order_by('titulo')
                 queryset = []
                 for query in search:
                     if(cat in query.categoria):
                         queryset.append(query)
             else:
-                search = Problemas.objects.all().filter(dificultad=dif)
+                search = Problemas.objects.all().filter(dificultad=dif).order_by('titulo')
                 queryset = []
                 for query in search:
                     if(cat in query.categoria):
                         queryset.append(query)
         else:
             print("no filtro")
-            queryset = Problemas.objects.all()
+            queryset = Problemas.objects.all().order_by('titulo')
         serializer = self.serializer_class(queryset, many=True)
         return Response({'data': serializer.data})
 
 class ViewOneProblem(APIView):
     serializer_class = ProblemasSerializer
+    permission_classes = [CheckUserCourse]
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         #id = request.query_params.get('title', None)
@@ -86,17 +88,38 @@ class ViewOneProblem(APIView):
         serializer = self.serializer_class(queryset)
         return Response({'data': serializer.data})
 
-class editProblem(generics.UpdateAPIView):
-    serializer_class = ProblemasSerializer
+class editProblem(APIView):
+    serializer_class = CrearProblemaSerializer
+    permission_classes = [CheckUserCourse]
     def get(self, request, *args, **kwargs):
+        print("Entro")
+        print(kwargs)
         id = self.kwargs['id']
+        nuevoEnunciado = self.kwargs['data']
         queryset = Problemas.objects.get(id=id)
         serializer = self.serializer_class(queryset)
-        return Response({'data': serializer.data})
+        
+        
+        titulo = serializer.data.get('titulo')
+        categoria = serializer.data.get('categoria')
+        dificultad = serializer.data.get('dificultad')
+        casos_prueba = serializer.data.get('casos_prueba')
+        origen = serializer.data.get('origen')
+
+
+        problem = Problemas(titulo=titulo, categoria=categoria, dificultad=dificultad, enunciado=nuevoEnunciado,casos_prueba=casos_prueba, origen=origen)
+
+            
+
+        problem.save()
+        print("Done")
+
+        return Response({'data': ProblemasSerializer(problem).data})
   
 
 class CreateProblemas(APIView):
     serializer_class = CrearProblemaSerializer
+    permission_classes = [CheckUserCourse]
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
@@ -125,6 +148,42 @@ class CreateProblemas(APIView):
         else:
             return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
 
+class RamoView(APIView):
+    serializer_class = RamosSerializer
+    permission_classes = [CheckUserCourse]
+    def get(self, request, format=None):
+        queryset = Ramos.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+class CursosView(APIView):
+    serializer_class = CursosSerializer
+    permission_classes = [AllowAny]
+    def get(self, request, format=None):
+        queryset = Cursos.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+class ViewOneCurso(APIView):
+    serializer_class = CursosSerializer
+    permission_classes = [CheckUserCourse]
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs['id']
+        #id = request.query_params.get('title', None)
+        queryset = Cursos.objects.get(id=id)
+        serializer = self.serializer_class(queryset)
+        return Response({'data': serializer.data})
+
+class UsuariosView(APIView):
+    serializer_class = UsuariosSerializer
+    permission_classes = [AllowAny]
+    def get(self, request, format=None):
+        queryset = Usuarios.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+
+
 def home(request):
     """
     queryset = Problemas.objects.all()
@@ -149,40 +208,8 @@ def home(request):
 
 
 
-class CursosView(APIView):
-    serializer_class = CursosSerializer
-    permission_classes = [AllowAny]
-    def get(self, request, format=None):
-        queryset = Cursos.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response({'data': serializer.data})
 
-class CreateCursos(APIView):
-    serializer_class = CrearCursosSerializer
-    def post(self, request, format=None):
-        if not self.request.session.exists(self.request.session.session_key):
-            self.request.session.create()
-        
-        
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-        
-            codigo_ramo = serializer.data.get('codigo_ramo')
-            seccion = serializer.data.get('seccion')
-            año = serializer.data.get('año')
-            semestre = serializer.data.get('semestre')
-            
-            ramo = Ramos.objects.get(id=codigo_ramo)
-            #host = self.request.session.session_key
-            curso = Cursos(codigo_ramo=ramo, seccion=seccion, año=año, semestre=semestre)
 
-            
-
-            curso.save()
-
-            return Response({'msg':'El curso se ha creado correctamente', 'data': CursosSerializer(curso).data})
-        else:
-            return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
 
 
 
@@ -240,3 +267,5 @@ def public(request):
 @api_view(['GET'])
 def private(request):
     return JsonResponse({'message': 'Hello from a private endpoint! You need to be authenticated to see this.'})
+
+
