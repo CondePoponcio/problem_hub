@@ -18,7 +18,8 @@ urlpatterns = [
     path('agregarUsuarios', index),
     path('crear_ramo', index),
     path('cursosAdmin',index),
-    path('cursoAdmin/<int:id>',index)
+    path('cursoAdmin/<int:id>',index),
+    path('scraper',index),
 
 
 ]

@@ -24,6 +24,7 @@ import crearRamo from "./pages/crearRamo";
 import agregarUsuarios from "./pages/agregarUsuarios";
 import CursosAdmin from "./pages/CursosAdmin";
 import CursoAdmin from "./pages/CursoAdmin";
+import scraper from "./pages/scraper";
 
 
 
@@ -83,6 +84,9 @@ const App = () => {
                     onRedirecting: () => <Loading />,
                 })}/>
                 <Route exact path="/cursoAdmin/:id" component={withAuthenticationRequired(CursoAdmin, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route exact path="/scraper" component={withAuthenticationRequired(scraper, {
                     onRedirecting: () => <Loading />,
                 })}/>
                     

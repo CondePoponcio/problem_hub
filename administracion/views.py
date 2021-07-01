@@ -15,6 +15,7 @@ from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
+import os
 
 class CheckUserCourse(BasePermission):
     """
@@ -185,3 +186,15 @@ class agregarUsuario(APIView):
             return Response({'msg':'El usario se ha creado correctamente', 'data': UsuariosSerializer(usuario).data})
         else:
             return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
+
+class Scraper(APIView):
+    permission_classes = [CheckUserCourse]
+    def post(self, request, *args, **kwargs):
+        categoria = request.data["categoria"]
+        dificultad = request.data["dificultad"]
+        call_scrapy(categoria,dificultad)
+        return Response({'msg':'Buscando ejercicios'})
+
+def call_scrapy(categoria, dificultad):
+    run = '/home/problem_hub/Scrapy/run.sh '+categoria+' '+dificultad
+    os.system(run)
