@@ -46,7 +46,6 @@ const CursoAgregarMiembro = (props) => {
         fetch('/administracion/agregar_miembros', requestOptions).then((response) => response.json())
         .then((json) =>{
             console.log("Boton : ",json);
-            setUsuarios(json.data)
             window.location.href = window.location.href;      
         })
     }

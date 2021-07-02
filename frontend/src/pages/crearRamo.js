@@ -23,9 +23,9 @@ const crearRamo = (props) => {
         };
         fetch('/administracion/crear_ramo', requestOptions).then((response) => response.json())
         .then((json) =>{
-            console.log("Boton : ",json);      
+            console.log("Boton : ",json);
+            window.location.href = window.location.href; 
         })
-        return  <Redirect  to="/crear_ramo" />
     }
 
     return(

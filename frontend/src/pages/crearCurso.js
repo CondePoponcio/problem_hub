@@ -42,7 +42,7 @@ const crearCurso = (props) => {
         fetch('/administracion/crear_curso', requestOptions).then((response) => response.json())
         .then((json) =>{
             console.log("Boton : ",json); 
-            setCurso(json.data)
+            window.location.href = window.location.href; 
         })
         
     }

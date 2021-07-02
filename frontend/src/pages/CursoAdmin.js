@@ -35,7 +35,8 @@ const CursoAdmin = (props) => {
     },[])
     
     const datosMiembros = () => {
-        fetch('/administracion/miembros_curso/'+parseInt(id), {
+        var aux = props.match.params.id
+        fetch('/administracion/miembros_curso/'+parseInt(aux), {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -61,6 +62,11 @@ const CursoAdmin = (props) => {
             </div>
                 <div>
                     <p>Curso: {datos.nombre} Sección: {datos.seccion} Semestre: {datos.semestre} Año: {datos.año}</p>
+                    {miembros.map((row) => (
+                        <ul>
+                            <li key={row.id}>{row.nombres + " "+ row.apellidos}</li>
+                        </ul>
+                    ))}
                     <a href={"/dashboard/cursoAgregarMiembro/"+id}>Agregar Miembros</a>
                     <a href={"/dashboard/cursoEditarMiembros/"+id}>Editar tipo de miembro</a>
 
