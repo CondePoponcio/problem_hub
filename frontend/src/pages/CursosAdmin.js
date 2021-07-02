@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from "react";
 import './../../static/css/inicio.css'
-import Tabla from './../components/Tabla'
-import { Filtro } from "../components/Filtro";
 import TopNavBar from './../components/TopNavbar';
 import { useAuth0 } from "@auth0/auth0-react";
+import CSRFToken from "../components/csrftoken"
+import NavAdmin from "../components/NavAdmin";
 
 
-const Problemas = (props) => {
-    const [datos, setDatos] = useState([]) //datos de los problemas de la base de datos
+
+const CursosAdmin = (props) => {
+    const [datos, setDatos] = useState([]) 
     const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
 
-    if(props.location.search != ""){
-        var data = props.location.search
-        data = data.replace("?", "")
-    }
-    else{
-        var data = "none"
-    }
     useEffect(()=>{
-        var URL = '/api/problemas/'+String(data)
-        console.log(URL)
+        var URL = '/administracion/cursos'
         fetch(URL, {
             method: 'GET',
             headers: {
@@ -32,6 +25,7 @@ const Problemas = (props) => {
                 setDatos(json.data)
             }  
         })
+        
 
     },[])
 
@@ -48,13 +42,15 @@ const Problemas = (props) => {
                     
                 </div>
             </div>
-            <div>
-                <Filtro/>
-            </div>
-            <div className="content">
-                <Tabla problemas={datos}/>
-                {}                
-            </div>
+            <ul>
+            {datos.map((row) => (
+                <li key={row.id}>
+                    <h2>{row.nombre}</h2>
+                    <p>Sección: {row.seccion} Semestre: {row.semestre} Año: {row.año}</p>
+                    <a href={"/dashboard/cursoAdmin/"+row.id}>Ver Curso</a>
+                </li>
+            ))}
+            </ul>
         </div>
 
     )
@@ -63,5 +59,4 @@ const Problemas = (props) => {
 };
 
 
-export default Problemas;
-
+export default CursosAdmin;

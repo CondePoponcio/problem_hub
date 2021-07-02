@@ -29,16 +29,20 @@ const Inicio = (props) => {
         
         <div className="grid">
             <TopNavBar/>
-            <div className="sideBar">
-                <div>
-                </div>
-                <div>
-
-                </div>
-                <div>
+            <button onClick={()=>{
+                fetch('/api/dermacne', {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }).then((response) => response.json())
+                .then((json) =>{
+                    console.log("Hola soy : ",json);
                     
-                </div>
-            </div>
+                    
+                })
+            }}>Api python</button>
             <div className="content">
 
                 <Tabla problemas={datos}/>

@@ -8,7 +8,7 @@ class ProblemasSerializer(serializers.ModelSerializer):
 class CrearProblemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problemas
-        fields = ('titulo', 'categoria', 'dificultad', 'enunciado', 'casos_prueba', 'origen', 'curso_id')
+        fields = ('titulo', 'categoria', 'dificultad', 'enunciado', 'casos_prueba', 'origen')
     
 
 class CursosSerializer(serializers.ModelSerializer):
@@ -31,9 +31,7 @@ class RamosSerializer(serializers.ModelSerializer):
 class CrearRamosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ramos
-        fields = ('programa', 'nombre')
-
-
+        fields = ('id', 'programa', 'nombre')
 
 class EvaluacionesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,3 +64,22 @@ class CrearCalificacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calificaciones
         fields = ('evaluacion_id', 'usuario_id', 'nota')
+class MostrarCursosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cursos, Ramos
+        fields = ('id', 'nombre', 'codigo_ramo', 'seccion', 'año', 'semestre', 'programa')
+
+class MostrarUsuariosCurso(serializers.ModelSerializer):
+    class Meta:
+        model = Usuarios, miembros_curso
+        fields = ('id', 'curso_id', 'tipo', 'nombres', 'apellidos')
+
+class UsuariosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuarios
+        fields = ('id', 'nombres', 'apellidos', 'correo', 'contraseña')
+
+class MiembroCursoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = miembros_curso
+        fields = ('usuario_id', 'curso_id', 'tipo')

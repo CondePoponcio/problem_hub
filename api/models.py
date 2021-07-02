@@ -60,6 +60,12 @@ class Usuarios(models.Model):
     correo = models.CharField(max_length=255) 
     contraseña = models.CharField(max_length=255)
 
+class Administradores(models.Model):
+    id = models.AutoField(primary_key=True) 
+    nombres = models.CharField(max_length=35) 
+    apellidos = models.CharField(max_length=35) 
+    correo = models.CharField(max_length=255) 
+    contraseña = models.CharField(max_length=255)
 
 class Respuestas(models.Model):
     id = models.AutoField(primary_key=True) 
