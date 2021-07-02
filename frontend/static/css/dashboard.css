@@ -198,18 +198,18 @@ footer{
   }
   
   .sidenav__list-item {
-    padding: 20px 20px 20px 40px;
+    padding: 20px 0 0 0;
+    color: #ddd;
+  }
+  .sidenav__list-item a{
     color: #ddd;
   }
   
-  .sidenav__list-item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-  }
+
   
   .main {
     grid-area: main;
-    background-color: #8fd4d9;
+    
   }
   
   .main-header {
@@ -311,4 +311,118 @@ footer{
     .main-cards {
       column-count: 2;
     }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  @keyframes open_menu {
+    0% {
+        opacity:0;
+        display: none;
+    }
+    1% {
+        opacity:0;
+        display: block;
+        transform: translateY(-100%);
+        overflow: hidden;
+    }   
+    100% {
+        opacity:1;
+        display: block;
+        overflow: hidden;
+        transform: translateY(0);
+    }
+}
+  .courses__drop{
+    background: #1f2930;
+    display: none;
+    overflow: hidden;
+  }
+  .courses__drop.active{
+    display: block;
+    animation: open_menu 600ms forwards;
+  }
+  .courses__drop ul{
+    padding-inline-start: 0;
+  }
+  .courses__drop li{
+    list-style-type: none;
+    padding: 1em 0;
+    transition: all .6s ease-in-out;
+  }
+  .courses__drop li:hover{
+    background: #3a464e;
+  }
+  .courses__drop.active li{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .courses__drop.active{
+    transform: translateY(0);
+  }
+  .sidenav ul li .sidenav__list-redirect {
+    position: relative; 
+    display: block;
+    height: 60px;
+    text-align: center;
+    line-height: 63px;
+    background: #2D3B45;
+    border-radius: 3px;
+    font-size: 20px;
+    color: rgb(197, 197, 197);
+    transition: .5s;
+  }
+  .sidenav .sidenav__list-redirect .list-item-icon{
+    margin-left: 8px;
+    right: 0;
+  }
+  
+  .sidenav ul li .sidenav__list-redirect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #8fd4d9;
+    transition: .5s;
+    transform: scale(.9);
+    z-index: -1;
+  }
+  
+  .sidenav ul li .sidenav__list-redirect:hover::before {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #8fd4d9;
+  }
+  
+  .sidenav ul li .sidenav__list-redirect:hover {
+    color: #8fd4d9;
+    box-shadow: 0 0 5px #8fd4d9;
+    text-shadow: 0 0 5px #8fd4d9;
   }

@@ -20,4 +20,6 @@ urlpatterns = [
     path('dashboard/cursosAdmin',index),
     path('dashboard/cursoAdmin/<int:id>',index),
     path('dashboard/scraper',index),
+    path('dashboard/curso/<int:id>',index),
+    
 ]

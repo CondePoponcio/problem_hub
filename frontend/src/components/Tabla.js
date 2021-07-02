@@ -10,7 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { AccessAlarm, ThreeDRotation, HouseIcon, CodeIcon } from '@material-ui/icons';
-
+import { Filtro } from "./Filtro";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -55,6 +55,8 @@ export default function Tabla(props) {
     },[props.problemas])
   return (
     <div className="table-container-pope">
+        
+                
         <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
             <TableHead>

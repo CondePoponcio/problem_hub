@@ -10,14 +10,18 @@ const Problemas = (props) => {
     const [datos, setDatos] = useState([]) //datos de los problemas de la base de datos
     const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
     const jQuerycode = (data) => {
-        
+        return 3;
         var table = $('#newTable').DataTable(
             {
                 "processing": true,
                 "serverSide": true,
                 ajax: {
                     url: '/api/public',
+                    "type": "POST",
                     dataFilter: function(data){
+                        console.log("DataTablkes: ",data)
+                        return []
+                        /*
                         var json = data.map(item => {
                             var values = Object.values(item);
                             var arr = []
@@ -26,6 +30,7 @@ const Problemas = (props) => {
                         })
              
                         return JSON.stringify( json ); // return JSON string
+                        */
                     }
                 },
                 columns: [
@@ -96,7 +101,6 @@ const Problemas = (props) => {
         .then((json) =>{
             if(json.data){
                 setDatos(json.data)
-                jQuerycode(json.data)
                 
             }
         })
@@ -106,24 +110,12 @@ const Problemas = (props) => {
     return(
         
         <div className="grid">
-            <div className="sideBar">
-                <div>
-                </div>
-                <div>
-
-                </div>
-                <div>
-                    
-                </div>
-            </div>
-            <div>
-                <Filtro/>
-            </div>
+            
             <div className="content">
-                <Tabla problemas={datos}/>
-                {}                
+                <Filtro/>
+                <Tabla problemas={datos}/>                
             </div>
-            <table id="newTable">...</table>
+            
         </div>
 
     )

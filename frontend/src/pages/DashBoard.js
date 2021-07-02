@@ -9,7 +9,7 @@ import './../../static/css/dashboard.css';
 //import Profile from "./views/Profile";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faTimes, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faTimes, faBars, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
 //library.add(fas, faCheckSquare, faCoffee)
 import $ from 'jquery';
@@ -36,6 +36,7 @@ import NotFound from "./404";
 import IndexDashBoard from "./../components/IndexDashBoard";
 import TopNavBar from './../components/TopNavbar'; 
 import scraper from "./scraper";
+import Curso from './Curso';
 // styles
 //import "./App.css";
 
@@ -44,8 +45,10 @@ import scraper from "./scraper";
 //initFontAwesome();
 
 const DashBoard = (props) => {
-    const { isLoading, error } = useAuth0();
     const { match } = props;
+    const [cursos, setCursos] = useState([])
+    const { user, isLoading, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
+    
     if (error) {
     return <div>Oops... {error.message}</div>;
     }
@@ -53,12 +56,45 @@ const DashBoard = (props) => {
     if (isLoading) {
     return <h1>Cargando</h1>;
     }
-
+    const getCookie = (name) => {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    useEffect(async ()=>{
+        if(!isAuthenticated || !user) return null
+        const accessToken = await getAccessTokenSilently()
+        var csrftoken = await getCookie('csrftoken');
+        const requestOptions = {
+            method: "POST",
+            headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`, 'X-CSRFToken': csrftoken},
+            body: JSON.stringify({
+                'correo': user.email
+            }),
+        };
+        fetch('/api/cursos', requestOptions).then((response) => response.json())
+        .then((json) =>{
+            console.log("Resonse Cursos: ", json)
+            setCursos(json.data)
+        })
+    },[])
     const jQuerycode = () => {
         //const sidenavEl = $('.sidenav');
         const homeLogo = $('.home_logo');
         const sidenavCloseEl = $('.sidenav__close-icon');
         const header__menu = $('.header__menu');
+        const cursos_boton = $('.sidenav__list-redirect.boton');
+        const cursos_drop = $('.courses__drop');
+        console.log("porque: ", cursos_boton, cursos_drop)
         // Add and remove provided class names
         function toggleClassName(el, className) {
         if (el.hasClass(className)) {
@@ -76,6 +112,12 @@ const DashBoard = (props) => {
         // Close the side nav on click
         sidenavCloseEl.on('click', function() {
         toggleClassName(homeLogo, 'active');
+        });
+
+        // Toogle Course
+        cursos_boton.on('click', function() {
+            console.log("Hice click cursos")
+            toggleClassName(cursos_drop, 'active');
         });
     }
     useEffect(()=>{
@@ -108,14 +150,33 @@ const DashBoard = (props) => {
                     <FontAwesomeIcon icon={faFacebook} size="lg" className="sidenav__brand-close"/>
                     </div>
                     <ul className="sidenav__list">
-                    <li className="sidenav__list-item"><Link to={`${match.path}`}>DashBoard</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/home`}>Home</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/problemas`}>Problemas</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/profile`}>profile</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/crear_curso`}>Crear Curso</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/crear_ramo`}>Crear Ramo</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/cursosAdmin`}>Cursos Admin</Link></li>
-                    <li className="sidenav__list-item"><Link to={`${match.path}/scraper`}>Web Scraping</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}`}>DashBoard</Link></li>
+                    <li className="sidenav__list-item">
+                        <div className="sidenav__list-redirect boton" to={`${match.path}/cursos`}>
+                            Cursos
+                            <FontAwesomeIcon className="list-item-icon" icon={faAngleDown} size="lg"/>
+                        </div>
+                        <div className="courses__drop">
+                            <ul>
+                                {
+                                    cursos && cursos.length > 0 && cursos.map((item, index) => {
+                                        return <li key={index}><Link to={{
+                                            pathname:`${match.path}/curso/${item.id}`,
+                                            data: cursos.find(element =>{
+                                                return element.id == item.id
+                                            })
+                                        }}>{item.nombre}</Link></li>
+                                    })
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/problemas`}>Problemas</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/profile`}>profile</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/crear_curso`}>Crear Curso</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/crear_ramo`}>Crear Ramo</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/cursosAdmin`}>Cursos Admin</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/scraper`}>Web Scraping</Link></li>
                     </ul>
                 </aside>
 
@@ -150,6 +211,9 @@ const DashBoard = (props) => {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}/cursoAdmin/:id`} component={withAuthenticationRequired(CursoAdmin, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/curso/:id`} component={withAuthenticationRequired(Curso, {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}/scraper`} component={withAuthenticationRequired(scraper, {
