@@ -32,16 +32,7 @@ const crearCurso = (props) => {
         
         <div className="grid">
             <NavAdmin/>
-            <div className="sideBar">
-                <div>
-                </div>
-                <div>
-
-                </div>
-                <div>
-                    
-                </div>
-            </div>
+            
             <div className="content">
                 <form method="POST" onSubmit={(event)=>{agregarUsuarios(event)}}>
                     <CSRFToken />

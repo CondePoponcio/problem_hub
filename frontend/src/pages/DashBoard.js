@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Router, Route, Switch, Link } from "react-router-dom";
 import { Container } from "reactstrap";
 import './../../static/css/dashboard.css';
@@ -7,6 +7,13 @@ import './../../static/css/dashboard.css';
 //import Footer from "./components/Footer";
 //import Home from "./views/Home";
 //import Profile from "./views/Profile";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCoffee, faTimes, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
+//library.add(fas, faCheckSquare, faCoffee)
+import $ from 'jquery'
+
 import ExternalApi from "./../views/ExternalApi";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import history from "./../utils/history";
@@ -47,16 +54,45 @@ const DashBoard = (props) => {
     return <h1>Cargando</h1>;
     }
 
+    const jQuerycode = () => {
+        //const sidenavEl = $('.sidenav');
+        const homeLogo = $('.home_logo');
+        const sidenavCloseEl = $('.sidenav__close-icon');
+        const header__menu = $('.header__menu');
+        // Add and remove provided class names
+        function toggleClassName(el, className) {
+        if (el.hasClass(className)) {
+            el.removeClass(className);
+        } else {
+            el.addClass(className);
+        }
+        }
+
+        // Open the side nav on click
+        header__menu.on('click', function() {
+        toggleClassName(homeLogo, 'active');
+        });
+
+        // Close the side nav on click
+        sidenavCloseEl.on('click', function() {
+        toggleClassName(homeLogo, 'active');
+        });
+    }
+    useEffect(()=>{
+        jQuerycode()
+    },[])
+
     return (
         <Router history={history}>
             
             <div className="grid-container">
                 <div className="home_logo">
-                    <i className="fas fa-bars header__menu"></i>
-                    <a href={"/home"} className="logo">Problem <span>Hub</span></a>
+                    <a href={"/dashboard"} className="logo">Problem <span>Hub</span></a>
                 
                 </div>
                 <header className="header">
+                    <FontAwesomeIcon icon={faBars} size="lg" className="header__menu"/>
+                    
                     {
                         /*
                                             <div className="header__search">Search...</div>
@@ -69,7 +105,7 @@ const DashBoard = (props) => {
 
                 <aside className="sidenav">
                     <div className="sidenav__close-icon">
-                    <i className="fas fa-times sidenav__brand-close"></i>
+                    <FontAwesomeIcon icon={faFacebook} size="lg" className="sidenav__brand-close"/>
                     </div>
                     <ul className="sidenav__list">
                     <li className="sidenav__list-item"><Link to={`${match.path}`}>DashBoard</Link></li>
@@ -128,6 +164,37 @@ const DashBoard = (props) => {
                 </main>
 
                 <footer className="footer">
+                    <div className="footer-content">
+                        <div id="item-1">
+                            <h4>
+
+                            </h4>
+                            <p>2 42207525/241</p>
+                            <p>contacto@mail.udp.cl</p>
+                            <p>Manuel Rodríguez Sur 415, Santiago 8320000 </p>
+                            
+                        </div>
+                        <div id="item-2">
+                            <p><a href="#">¿Quiere visitar nuestro Tour?</a></p>
+                            
+                            <p><a href="#">Preguntas frecuentes</a></p>
+                        </div>
+                        <div id="item-3">
+                            <h4>
+                                Síguenos
+                            </h4>
+                            <ul>                    
+                                <li style={{color:"#2d88ff"}}><FontAwesomeIcon icon={faFacebook} size="lg" /></li>
+                                <li style={{color: "rgba(29,161,242,1.00)"}}><FontAwesomeIcon icon={faTwitter} size="lg"/></li>
+                                <li id="insta"><FontAwesomeIcon icon={faInstagram} size="lg"/></li>
+                                <li style={{color: "rgb(255, 0, 0)"}}><FontAwesomeIcon icon={faYoutube} size="lg"/></li>
+                            </ul>
+                            <button onClick={()=>{window.location.href='#';}}>Escríbenos</button>
+                        </div>
+                    </div>
+                    
+                    
+                    
                     
                 </footer>
             </div>
