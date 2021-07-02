@@ -51,7 +51,6 @@ const App = () => {
         <Router history={history}>
             
             
-            <Container className="flex-grow-1 mt-5">
             <Switch>
 
                 <Route exact path="/" component={LoginButton}/>
@@ -89,8 +88,6 @@ const App = () => {
                 }
                     
             </Switch>
-            </Container>
-            
         </Router>
     );
 };

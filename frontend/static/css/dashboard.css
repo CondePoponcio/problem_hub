@@ -8,7 +8,87 @@
 a{
     text-decoration: none;
 }
-
+#insta {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  
+}
+footer{
+    background: #323F4F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /*padding: 0 3em; No activar esto, ensancha mas que el ancho de pantalla*/
+}
+.footer-content{
+    margin-top: 2em;
+    margin-bottom: 5em;
+    max-width: 1000px;
+    width: 100%;
+    padding: 0 2em;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit,minmax(min(50%,250px), 1fr));
+}
+.footer-content > div{
+    justify-self: start;
+    align-self: flex-start;
+}
+#item-1, #item-1 a{
+    color: #F3FCFF;
+    text-decoration: none;
+}
+#item-2, #item-2 a{
+    color: #DDE3EA;
+    text-decoration: none;
+}
+#item-3, #item-3 a{
+    color: #DDE3EA;
+    text-decoration: none;
+}
+#item-3 ul{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+#item-3 li{
+    /*ALINEA LOS ICONOS DE REDES SOCIALES EN EL FOOTER CON SU DISEÑO*/
+    border: 1px solid #F3F2F6;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+}
+#item-3 li + li{
+    /*APLICA MARGIN A TODOS LOS LI DEL FOOTER DE ICONOS EXCEPTO AL PRIMERO */
+    margin-left: 1em;
+}
+#item-3 button{
+    border: 1px solid #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: transparent;
+    padding: 1em 2em;
+}
+#item-4{
+    width: 100%;
+    background-color: #2d3a49;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 3em 0;
+    min-height: 100px;
+}
+#item-4, #item-4 a{
+    color: #DDE3EA;
+    text-decoration: none;
+}
 
 .grid-container {
     margin: 0;
@@ -16,18 +96,19 @@ a{
     color: #fff;
     font-family: 'Open Sans', Helvetica, sans-serif;
     box-sizing: border-box;
+    height: inherit;
+    overflow: auto;
   }
   
   /* Assign grid instructions to our parent grid container, mobile-first (hide the sidenav) */
   .grid-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50px 1fr 50px;
+    grid-template-rows: 50px 1fr auto;
     grid-template-areas:
       'header'
       'main'
       'footer';
-    height: 100vh;
   }
   
   .home_logo {
@@ -42,11 +123,11 @@ a{
     cursor: pointer;
     padding: 12px;
     color: #FFF;
-    transform: translateX(-245px);
+    transform: translateX(-100%);
     transition: all .6s ease-in-out;
     
   }
-  .home_logo.active {
+  .home_logo.active, .home_logo.active ~ .sidenav {
     transform: translateX(0);
   }
   .home_logo > .logo{
@@ -74,25 +155,31 @@ a{
   .header__search {
     margin-left: 42px;
   }
+  .header__menu{
+    
+  }
   
   .sidenav {
+    position: fixed;
     grid-area: sidenav;
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 240px;
+    width: 100%;
+    max-width: 240px;
     position: fixed;
     overflow-y: auto;
-    transform: translateX(-245px);
+    transform: translateX(-100%);
     transition: all .6s ease-in-out;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
     z-index: 1; /* Needs to sit above the hamburger menu icon */
     background-color: #2D3B45;
   }
-  
+  /*
   .sidenav.active {
     transform: translateX(0);
   }
+  */
   
   .sidenav__close-icon {
     position: absolute;
@@ -182,17 +269,10 @@ a{
     height: 265px;
   }
   
-  .footer {
-    grid-area: footer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    background-color: #648ca6;
-  }
+  
   
   /* Non-mobile styles, 750px breakpoint */
-  @media only screen and (min-width: 46.875em) {
+  @media only screen and (min-width: 750px) {
     /* Show the sidenav */
     .grid-container {
       grid-template-columns: 240px 1fr;
@@ -205,7 +285,9 @@ a{
     .header__search {
       margin-left: 0;
     }
-  
+    .header__menu{
+      visibility: hidden;
+    }
     .sidenav {
       position: relative;
       transform: translateX(0);
@@ -215,6 +297,7 @@ a{
         position: relative;
         display: flex;
         transform: translateX(0);
+        margin-top: 1em;
     }
   
     .sidenav__close-icon {
@@ -223,7 +306,7 @@ a{
   }
   
   /* Medium screens breakpoint (1050px) */
-  @media only screen and (min-width: 65.625em) {
+  @media only screen and (min-width: 1050px) {
     /* Break out main cards into two columns */
     .main-cards {
       column-count: 2;
