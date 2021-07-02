@@ -91,11 +91,11 @@ class ViewOneProblem(APIView):
 class editProblem(APIView):
     serializer_class = CrearProblemaSerializer
     permission_classes = [CheckUserCourse]
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         print("Entro")
         print(kwargs)
         id = self.kwargs['id']
-        nuevoEnunciado = self.kwargs['data']
+        nuevoEnunciado = request.data['enunciado']
         queryset = Problemas.objects.get(id=id)
         serializer = self.serializer_class(queryset)
         

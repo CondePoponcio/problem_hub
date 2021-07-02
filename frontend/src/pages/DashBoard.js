@@ -36,6 +36,8 @@ import NotFound from "./404";
 import IndexDashBoard from "./../components/IndexDashBoard";
 import TopNavBar from './../components/TopNavbar'; 
 import scraper from "./scraper";
+import CursoAgregarMiembro from "./CursoAgregarMiembro";
+import CursoEditarMiembros from "./CursoEditarMiembros";
 // styles
 //import "./App.css";
 
@@ -150,6 +152,12 @@ const DashBoard = (props) => {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}/cursoAdmin/:id`} component={withAuthenticationRequired(CursoAdmin, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/cursoAgregarMiembro/:id`} component={withAuthenticationRequired(CursoAgregarMiembro, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/cursoEditarMiembros/:id`} component={withAuthenticationRequired(CursoEditarMiembros, {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route path={`${match.path}/scraper`} component={withAuthenticationRequired(scraper, {

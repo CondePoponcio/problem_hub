@@ -10,7 +10,7 @@ urlpatterns = [
     path('problemas/<str:data>', ProblemasFilterView.as_view()),
     path('crear_problema', CreateProblemas.as_view()),
     path('problema/<int:id>', ViewOneProblem.as_view()),
-    path('problema/edit/<int:id>/<str:data>', editProblem.as_view()),
+    path('problema/edit/<int:id>', editProblem.as_view()),
     #path('cursos', CursosView.as_view()),
     #path('crear_curso', CreateCursos.as_view()),
     path('evaluaciones', EvaluacionesView.as_view()),

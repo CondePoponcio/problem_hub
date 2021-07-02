@@ -43,6 +43,7 @@ const Problema = (props) => {
 
     const cambiarEnunciado = async (e) => {
         e.preventDefault()
+        var id = props.match.params.id
         const accessToken = await getAccessTokenSilently()
         const requestOptions = {
             method: "POST",
@@ -51,9 +52,11 @@ const Problema = (props) => {
                 'enunciado':e.target[1]["value"]
             }),
         };
-        fetch('/api/problema/edit'+parseInt(id), requestOptions).then((response) => response.json())
+        fetch('/api/problema/edit/'+parseInt(id), requestOptions).then((response) => response.json())
         .then((json) =>{
-            console.log("Boton : ",json);      
+            console.log("Boton : ",json); 
+            window.location.href = window.location.href;
+    
         })
     }
 

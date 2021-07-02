@@ -92,9 +92,11 @@ class CursoView(APIView):
     permission_classes = [CheckUserCourse]
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
+        arr = []
         queryset = Cursos.objects.get(id=id)
+        arr = {"id":queryset.id, "nombre":(queryset.codigo_ramo).nombre, "seccion":queryset.seccion, "semestre":queryset.semestre, "año":queryset.año}
         serializer = self.serializer_class(queryset)
-        return Response({'data': serializer.data})
+        return Response({'data': arr})
 
 class MiembrosCursoView(APIView):
     permission_classes = [CheckUserCourse]
