@@ -12,8 +12,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCoffee, faTimes, faBars } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFacebook, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
 //library.add(fas, faCheckSquare, faCoffee)
-import $ from 'jquery'
-
+import $ from 'jquery';
+import dt from 'datatables.net';
 import ExternalApi from "./../views/ExternalApi";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import history from "./../utils/history";
@@ -189,7 +189,6 @@ const DashBoard = (props) => {
                                 <li id="insta"><FontAwesomeIcon icon={faInstagram} size="lg"/></li>
                                 <li style={{color: "rgb(255, 0, 0)"}}><FontAwesomeIcon icon={faYoutube} size="lg"/></li>
                             </ul>
-                            <button onClick={()=>{window.location.href='#';}}>Escríbenos</button>
                         </div>
                     </div>
                     

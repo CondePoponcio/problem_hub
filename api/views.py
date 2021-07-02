@@ -271,6 +271,48 @@ def requires_scope(required_scope):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def public(request):
+    return JsonResponse({
+    "id": 7,
+    "titulo": "BagsOfMarbles",
+    "categoria": [
+        "Greedy",
+        "SimpleMath",
+        "SimpleSearch",
+        "Iteration"
+    ],
+    "dificultad": "Facil",
+    "enunciado": " You want to have desired white marbles. Currently you have none. All the marbles are in bags owned by your friend. Each of your friend's bags contains exactly bagSize marbles. Each of those marbles is either white (you want those) or black (you don't care about those).   Your friends has bags of four types:  no white marblesnoWhiteBagsno black marblesnoBlackBagssome white marblessomeWhiteBagssome black marblessomeBlackBags  You are going to take marbles from your friend's bags, one at a time. More precisely, in each step you may choose any specific bag owned by your friend and take one random marble from that bag.   Return the smallest X such that you can be sure to reach your goal after taking X marbles (provided that you choose the bags in a smart way). If it's impossible to give such a guarantee, return -1 instead. ",
+    "casos_prueba": [
+        [
+            "5",
+            "10",
+            "0",
+            "1",
+            "0",
+            "0",
+            "Returns: 5"
+        ],
+        [
+            "2",
+            "10",
+            "2",
+            "0",
+            "1",
+            "0",
+            "Returns: -1"
+        ],
+        [
+            "51",
+            "7",
+            "7",
+            "7",
+            "7",
+            "7",
+            "Returns: 63"
+        ]
+    ],
+    "origen": "https://community.topcoder.com/stat?c=problem_statement&pm=15827"
+})
     return JsonResponse({'message': 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'})
 
 
