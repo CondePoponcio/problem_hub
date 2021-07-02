@@ -126,11 +126,11 @@ class editarTipoUsuarios(APIView):
             if(i%2==0):
                 if(datos[i] == "false"):
                     if(miembro.tipo == "Alumno"):
-                        miembros_curso.objects.filter(usuario_id=usuarios_id[j]).update(tipo="Docente")
+                        miembros_curso.objects.filter(usuario_id=usuarios_id[j],curso_id=curso_id).update(tipo="Docente")
                         print("Se cambio de Alumno a Docente")
                 else:
                     if(miembro.tipo == "Docente"):
-                        miembros_curso.objects.filter(usuario_id=usuarios_id[j]).update(tipo="Alumno")
+                        miembros_curso.objects.filter(usuario_id=usuarios_id[j],curso_id=curso_id).update(tipo="Alumno")
                         print("Se cambio de Docente a Alumno")
                 j+=1
             i+=2

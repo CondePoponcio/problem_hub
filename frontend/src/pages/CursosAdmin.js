@@ -47,7 +47,7 @@ const CursosAdmin = (props) => {
                 <li key={row.id}>
                     <h2>{row.nombre}</h2>
                     <p>Sección: {row.seccion} Semestre: {row.semestre} Año: {row.año}</p>
-                    <a href={"/cursoAdmin/"+row.id}>Ver Curso</a>
+                    <a href={"/dashboard/cursoAdmin/"+row.id}>Ver Curso</a>
                 </li>
             ))}
             </ul>
