@@ -88,6 +88,8 @@ class ViewOneProblem(APIView):
 
 class editProblem(generics.UpdateAPIView):
     serializer_class = ProblemasSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         queryset = Problemas.objects.get(id=id)
@@ -97,6 +99,8 @@ class editProblem(generics.UpdateAPIView):
 
 class CreateProblemas(APIView):
     serializer_class = CrearProblemaSerializer
+    
+    permission_classes = [CheckUserCourse, AllowAny]
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
@@ -138,10 +142,144 @@ def home(request):
 
 
 
+class EvaluacionesView(APIView):
+    serializer_class = EvaluacionesSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+    #IsAuthenticated
+    def get(self, request, format=None):
+        queryset = Evaluaciones.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+class EvaluacionesCursoView(APIView):
+    serializer_class = EvaluacionesSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+    #IsAuthenticated
+    def get(self, request, *args, **kwargs):
+        curso_id = self.kwargs['curso_id']
+        queryset = Evaluaciones.objects.get(curso_id=curso_id)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+class ViewOneEvaluacion(APIView):
+    serializer_class = EvaluacionesSerializer
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs['id']
+        #id = request.query_params.get('title', None)
+        queryset = Evaluaciones.objects.get(id=id)
+        serializer = self.serializer_class(queryset)
+        return Response({'data': serializer.data})
+
+class ProbEvalView(APIView):
+    serializer_class = ProbEvalSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+    #IsAuthenticated
+    def get(self, request, format=None):
+        queryset = Evaluaciones.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+class DeleteProbEval(APIView):
+    serializer_class = EvaluacionesSerializer
+    def delete(self, request, *args, **kwargs):
+        problema_id = self.kwargs['problema_id']
+        curso_id = self.kwargs['curso_id']
+        queryset = prob_eval.objects.get(curso_id=curso_id, problema_id=problema_id)
+        queryset.delete()
+        return Response ('Problema eliminado de la evaluacion')
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def CrearEvaluacion(request, format=None):   
+    serializerProblema = CrearEvaluacionesSerializer(data=request.data.get('data1'))
+    serializerProbEval = CrearProbEvalSerializer(data=request.data.get('data2'))
+
+    return Response({'respuesta1': request.data.get('data1'), 'respuesta2': request.data.get('data2'), 'respuesta3': serializerProblema.is_valid(), 'respuesta4': serializerProbEval.is_valid})
+        #'respuesta1': request.data.get('data1'), 'respuesta2': request.data.get('data2'), 'respuesta3': serializerProblema.is_valid(), 'respuesta4': serializerProbEval.is_valid}) 
+    
+    
+    if serializerProblema.is_valid() and serializerProbEval.is_valid():
+
+        fecha_creacion = serializerProblema.data.get('fecha_creacion') 
+        fecha_inicio = serializerProblema.data.get('fecha_inicio') 
+        fecha_termino = serializerProblema.data.get('fecha_termino')
+        autor = serializerProblema.data.get('autor')
+        curso_id = serializerProblema.data.get('curso_id')
+
+        curso = Cursos.objects.get(id=curso_id)
+        evaluacion = Evaluaciones(fecha_creacion=fecha_creacion, fecha_inicio=fecha_inicio, fecha_termino=fecha_termino, autor=autor, curso_id=curso)
+        
+        evaluacion.save()
+
+        problema_id = serializerProbEval.data.get('problema_id')
+        problema = Problemas.objects.get(problema_id=problema_id)
+
+        evaluacion_id = serializerProbEval.data.get('evaluacion_id') 
+        evaluacion =  Evaluaciones.objects.get(evaluacion_id=evaluacion_id)
+        #host = self.request.session.session_key
+
+        probEv = prob_eval(problema_id=problema, evaluacion_id=evaluacion)
+        
+        probEv.save()
+        
+        return Response({'msg':'La evaluacion, y los problemas asociados se han creado correctamente', 'data1': EvaluacionesSerializer(evaluacion).data, 'data2':ProbEvalSerializer(probEval).data})
+    else:
+        return Response({'error1': serializerProblema.errors, 'error2': serializerProbEval.errors, 'msg':'Los datos no se han ingresado correctamente'})
 
 
+def CalificacionesView(APIView):
+    serializer_class = CalificacionesSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+    def get(self, request, format=None):
+        queryset = Calificaciones.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
 
 
+"""
+def NotaAlumno(id alumno, id evaluacion)
+    serializer_class = CalificacionesSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+    #IsAuthenticated
+    def get(self, request, *args, **kwargs):
+        curso_id = self.kwargs['curso_id']
+        queryset = Calificaciones.objects.filter(evaluacion_id=evaluacion_id)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+"""
+
+
+def CalificacionesAlumno(APIView):
+    serializer_class = CalificacionesSerializer
+    permission_classes = [CheckUserCourse, AllowAny]
+    #IsAuthenticated
+    def get(self, request, *args, **kwargs):
+        curso_id = self.kwargs['curso_id']
+        usuario_id = self.kwargs['usuario_id']
+        queryset = Calificaciones.objects.filter(evaluacion_id=evaluacion_id, usuario_id = usuario_id )
+        serializer = self.serializer_class(queryset, many=True)
+        return Response({'data': serializer.data})
+
+def CreateCalificaciones(APIView):
+    serializer_class = CrearCalificaciones
+    def post(self, request, format=None):
+        #if not self.request.session.exists(self.request.session.session_key):
+        #    self.request.session.create()
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            
+            evaluacion_id = serializer.data.get('evaluacion_id')
+            usuario_id = serializer.data.get('usuario_id')
+            nota = serializer.data.get('nota')
+            
+            calificacion = Calificaciones(evaluacion_id= evaluacion_id, usuario_id=usuario_id, nota=nota)
+
+        
+            calificacion.save()
+
+            return Response({'msg':'El curso se ha creado correctamente', 'data': CursosSerializer(curso).data})
+        else:
+            return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
 
 
 
