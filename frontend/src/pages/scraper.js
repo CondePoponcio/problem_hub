@@ -23,7 +23,9 @@ const scraper = (props) => {
         };
         fetch('/administracion/scraper', requestOptions).then((response) => response.json())
         .then((json) =>{
-            console.log("Boton : ",json);      
+            console.log("Boton : ",json);
+            window.location.href = window.location.href;
+     
         })
     }
 

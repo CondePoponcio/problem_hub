@@ -8,17 +8,15 @@ import NavAdmin from "../components/NavAdmin";
 
 
 
-const CursoAdmin = (props) => {
+const CursoAgregarMiembro = (props) => {
     const [datos, setDatos] = useState([])
     const [id, setId] = useState()
-    const [miembros, setMiembros] = useState([]) 
-    const [show, setShow] = useState(true)
     const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
 
     useEffect(()=>{
-        var aux = props.match.params.id
-        setId(parseInt(aux))
-        var URL = '/administracion/curso/'+aux
+        var id = props.match.params.id
+        setId(parseInt(id))
+        var URL = '/administracion/curso/'+id
         fetch(URL, {
             method: 'GET',
             headers: {
@@ -29,24 +27,29 @@ const CursoAdmin = (props) => {
         .then((json) =>{
             if(json.data){
                 setDatos(json.data)
-                datosMiembros()
             }  
         })
     },[])
     
-    const datosMiembros = () => {
-        var aux = props.match.params.id
-        fetch('/administracion/miembros_curso/'+parseInt(aux), {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => response.json())
+        
+    const agregarUsuarios = async (e) => {
+        e.preventDefault()
+        var id = props.match.params.id
+        const accessToken = await getAccessTokenSilently()
+        const requestOptions = {
+            method: "POST",
+            headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`},
+            body: JSON.stringify({
+                'usuarios':e.target[1]["value"], 'curso_id':id
+            }),
+        };
+        fetch('/administracion/agregar_miembros', requestOptions).then((response) => response.json())
         .then((json) =>{
-            setMiembros(json.data)     
+            console.log("Boton : ",json);
+            window.location.href = window.location.href;      
         })
     }
+
     return(
         
         <div className="grid">
@@ -62,14 +65,13 @@ const CursoAdmin = (props) => {
             </div>
                 <div>
                     <p>Curso: {datos.nombre} Sección: {datos.seccion} Semestre: {datos.semestre} Año: {datos.año}</p>
-                    {miembros.map((row) => (
-                        <ul>
-                            <li key={row.id}>{row.nombres + " "+ row.apellidos}</li>
-                        </ul>
-                    ))}
-                    <a href={"/dashboard/cursoAgregarMiembro/"+id}>Agregar Miembros</a>
-                    <a href={"/dashboard/cursoEditarMiembros/"+id}>Editar tipo de miembro</a>
-
+                    <form method="POST" onSubmit={(event)=>(agregarUsuarios(event))}>
+                        <CSRFToken />
+                        <p>Ingrese los mails de los usuarios con comas entre medio:</p>
+                        <textarea name="usuarios"></textarea>
+                    <button>Agregar</button>
+                    </form>
+                    <a href={"/dashboard/cursoAdmin/"+id}>Atras</a>
                 </div>
         </div>
 
@@ -79,4 +81,4 @@ const CursoAdmin = (props) => {
 };
 
 
-export default CursoAdmin;
+export default CursoAgregarMiembro;

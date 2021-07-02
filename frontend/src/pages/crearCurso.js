@@ -8,10 +8,6 @@ import NavAdmin from "../components/NavAdmin";
 
 const crearCurso = (props) => {
     const [datos, setDatos] = useState([]) 
-    const [curso, setCurso] = useState([])
-    const [usuarios, setUsuarios] = useState([])
-    const [show, setShow] = useState(true)
-    const [show2, setShow2] = useState(true)
     const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
 
     useEffect(()=>{
@@ -46,29 +42,10 @@ const crearCurso = (props) => {
         fetch('/administracion/crear_curso', requestOptions).then((response) => response.json())
         .then((json) =>{
             console.log("Boton : ",json); 
-            setCurso(json.data)
-            agregarUsuarios(e)
+            window.location.href = window.location.href; 
         })
         
     }
-    
-    const agregarUsuarios = async (e) => {
-        e.preventDefault()
-        const accessToken = await getAccessTokenSilently()
-        const requestOptions = {
-            method: "POST",
-            headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`},
-            body: JSON.stringify({
-                'usuarios':e.target[5]["value"], 'curso_id':curso.id
-            }),
-        };
-        fetch('/administracion/agregar_miembros', requestOptions).then((response) => response.json())
-        .then((json) =>{
-            console.log("Boton : ",json);
-            setUsuarios(json.data)      
-        })
-    }
-
 
     return(
         
@@ -99,8 +76,6 @@ const crearCurso = (props) => {
                         <input name="semestre" type="text" placeholder="Ingresar Semestres"/>
                         <p>Ingrese Año:</p>
                         <input name="año" type="text" placeholder="Ingresar Año"/>
-                        <p>Ingrese los mails de los usuarios con comas entre medio:</p>
-                        <textarea name="usuarios"></textarea>
                         <br/>
                         <button type="submit">Agregar</button>
                     </form>             
