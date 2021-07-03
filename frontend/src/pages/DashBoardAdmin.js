@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Router, Route, Switch, Link, Redirect } from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 import { Container } from "reactstrap";
 import './../../static/css/dashboard.css';
 //import Loading from "./components/Loading";
@@ -46,11 +46,11 @@ import CursoEditarMiembros from "./CursoEditarMiembros";
 //import initFontAwesome from "./utils/initFontAwesome";
 //initFontAwesome();
 
-const DashBoard = (props) => {
+const DashBoardAdmin = (props) => {
     const { match } = props;
     const [cursos, setCursos] = useState([])
     const { user, isLoading, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
-    const [isAdmin, setIsAdmin] = useState(false);
+    
     if (error) {
     return <div>Oops... {error.message}</div>;
     }
@@ -125,9 +125,7 @@ const DashBoard = (props) => {
     useEffect(()=>{
         jQuerycode()
     },[])
-    if(isAdmin){
-        return <Redirect to="/dashboard-admin" />
-    }
+
     return (
         <Router history={history}>
             
@@ -176,6 +174,10 @@ const DashBoard = (props) => {
                         </div>
                     </li>
                     <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/profile`}>Perfil</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/crear_curso`}>Crear Curso</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/crear_ramo`}>Crear Ramo</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/cursosAdmin`}>Cursos Admin</Link></li>
+                    <li className="sidenav__list-item"><Link className="sidenav__list-redirect" to={`${match.path}/scraper`}>Web Scraping</Link></li>
                     </ul>
                 </aside>
 
@@ -186,13 +188,19 @@ const DashBoard = (props) => {
                         <Route path={`${match.path}/profile`} component={withAuthenticationRequired(Profile, {
                             onRedirecting: () => <Loading />,
                         })}/>
-                        <Route path={`${match.path}/home`} component={withAuthenticationRequired(Inicio, {
+                        <Route path={`${match.path}/crear_curso`} component={withAuthenticationRequired(crearCurso, {
                             onRedirecting: () => <Loading />,
                         })}/>
-                        <Route exact path={`${match.path}/curso/:curso_id/problema/:id`} component={withAuthenticationRequired(Problema, {
+                        <Route path={`${match.path}/crear_ramo`} component={withAuthenticationRequired(crearRamo, {
                             onRedirecting: () => <Loading />,
                         })}/>
-                        <Route exact path={`${match.path}/curso/:id/problemas`} component={withAuthenticationRequired(Problemas, {
+                        <Route path={`${match.path}/agregarUsuarios`} component={withAuthenticationRequired(agregarUsuarios, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/cursosAdmin`} component={withAuthenticationRequired(CursosAdmin, {
+                            onRedirecting: () => <Loading />,
+                        })}/>
+                        <Route path={`${match.path}/cursoAdmin/:id`} component={withAuthenticationRequired(CursoAdmin, {
                             onRedirecting: () => <Loading />,
                         })}/>
                         <Route exact path={`${match.path}/curso/:id`} component={withAuthenticationRequired(Curso, {
@@ -230,25 +238,6 @@ const DashBoard = (props) => {
                             <p><a href="#">¿Quiere visitar nuestro Tour?</a></p>
                             
                             <p><a href="#">Preguntas frecuentes</a></p>
-
-                            <button style={{background:'transparent', color:'#FFF', border:'0'}} onClick={async ()=>{
-                                const accessToken = await getAccessTokenSilently()
-                                var csrftoken = await getCookie('csrftoken');
-                                const requestOptions = {
-                                    method: "POST",
-                                    headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`, 'X-CSRFToken': csrftoken},
-                                    body: JSON.stringify({
-                                        'correo': user.email
-                                    }),
-                                };
-                                fetch('/administracion/isadmin', requestOptions).then((response) => response.json())
-                                .then((json) =>{
-                                    console.log("sysadmin: ", json)
-                                    if(json.data != null){
-                                        setIsAdmin(json.data)
-                                    }
-                                })
-                            }}>Ingresar como Administrador</button>
                         </div>
                         <div id="item-3">
                             <h4>
@@ -273,4 +262,4 @@ const DashBoard = (props) => {
     );
 };
 
-export default DashBoard;
+export default DashBoardAdmin;

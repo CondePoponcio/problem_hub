@@ -22,6 +22,7 @@ import Loading from './components/Loading';
 import crearCurso from "./pages/crearCurso";
 import crearRamo from "./pages/crearRamo";
 import DashBoard from "./pages/DashBoard";
+import DashBoardAdmin from "./pages/DashBoardAdmin";
 import agregarUsuarios from "./pages/agregarUsuarios";
 import CursosAdmin from "./pages/CursosAdmin";
 import CursoAdmin from "./pages/CursoAdmin";
@@ -55,6 +56,9 @@ const App = () => {
 
                 <Route exact path="/" component={LoginButton}/>
                 <Route path="/dashboard" component={withAuthenticationRequired(DashBoard, {
+                    onRedirecting: () => <Loading />,
+                })}/>
+                <Route path="/dashboard-admin" component={withAuthenticationRequired(DashBoardAdmin, {
                     onRedirecting: () => <Loading />,
                 })}/>
                 <Route path="*">

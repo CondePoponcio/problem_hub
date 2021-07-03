@@ -20,3 +20,5 @@ admin.site.register(Respuestas)
 admin.site.register(Calificaciones)
 
 admin.site.register(miembros_curso)
+
+admin.site.register(Administradores)

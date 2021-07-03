@@ -22,7 +22,7 @@ urlpatterns = [
     path('crear_evaluacion', CrearEvaluacion),
     path('dermacne', apidermacne),
     path('ramos', RamoView.as_view()),
-    #path('curso/<int:id>', ViewOneCurso.as_view()),
+    path('curso/<int:id>', ViewOneCurso.as_view()),
 
     path('usuarios', UsuariosView.as_view()),
     path('miembros', MiembrosView.as_view()),

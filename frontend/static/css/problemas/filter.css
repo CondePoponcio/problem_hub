@@ -5,15 +5,15 @@
 button{
     border-radius: 4px
 }
-form{
+#form_filter{
     display: grid;
     grid-template-columns: 2fr 2fr 1fr;
     align-items: center;
 }
-form > div{
+#form_filter > div{
     margin: 3em 2em;
 }
-form
+#form_filter
 .rule {
     margin: 10px 0;
     border: none;

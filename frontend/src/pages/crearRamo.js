@@ -18,13 +18,13 @@ const crearRamo = (props) => {
             method: "POST",
             headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`},
             body: JSON.stringify({
-                'id':e.target[1]["value"], 'programa':e.target[3]["value"], 'nombre':e.target[2]["value"]
+                'id':e.target[1]["value"], 'programa':e.target[3]["value"], 'nombre':e.target[2]["value"], 'correo': user.email
             }),
         };
         fetch('/administracion/crear_ramo', requestOptions).then((response) => response.json())
         .then((json) =>{
             console.log("Boton : ",json);
-            window.location.href = window.location.href; 
+            
         })
     }
 

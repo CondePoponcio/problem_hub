@@ -9,77 +9,20 @@ import dt from 'datatables.net';
 const Problemas = (props) => {
     const [datos, setDatos] = useState([]) //datos de los problemas de la base de datos
     const { user, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
-    const jQuerycode = (data) => {
-        return 3;
-        var table = $('#newTable').DataTable(
-            {
-                "processing": true,
-                "serverSide": true,
-                ajax: {
-                    url: '/api/public',
-                    "type": "POST",
-                    dataFilter: function(data){
-                        console.log("DataTablkes: ",data)
-                        return []
-                        /*
-                        var json = data.map(item => {
-                            var values = Object.values(item);
-                            var arr = []
-                    
-                            return values
-                        })
-             
-                        return JSON.stringify( json ); // return JSON string
-                        */
-                    }
-                },
-                columns: [
-                    { title: "id" },
-                    { title: "Titulo" },
-                    { title: "Dificultad" },
-                    { title: "Categoria" }
-                ],
-                dom: '<<".sd1"<".sd1-5" f>B>< ".sd2" tr><".sd3" pil>>',
-                retrieve: true,
-                pagingType: "simple",
-                language: {
-                    "search": '',
-                    "searchPlaceholder": "\uf002 Buscar pacientes",
-                    "paginate": {
-                        "previous": '<i class="fas fa-chevron-left"></i>',
-                        "next": '<i class="fas fa-chevron-right"></i>',
-
-                    },
-                    "info": '_START_ - _END_ de _TOTAL_',
-                    "lengthMenu": 'Por página <select>' +
-                        '<option value="10"><div>10</div></option>' +
-                        '<option value="20">20 </option>' +
-                        '<option value="30">30</option>' +
-                        '<option value="40">40</option>' +
-                        '<option value="50">50</option>' +
-                        '<option value="-1">All</option>' +
-                        '</select>'
-                },
-                buttons: [{
-                    extend: 'collection',
-                    text: '<i class="fas fa-sort-amount-up" style="color: #F9807D; "></i> Ordenar',
-                    tag: 'span',
-                    className: 'b1',
-                    buttons: [{ text: 'Nombre <i id="icon_sda" class="fas fa-arrow-up"></i>', action: function () { table.order([0, 'asc']).draw(); } },
-                    { text: 'Solicitud <i id="icon_sda" class="fas fa-arrow-up"></i>', action: function () { table.order([1, 'asc']).draw(); } },
-                    { text: 'Fecha <i id="icon_sda" class="fas fa-arrow-up"></i>', action: function () { table.order([2, 'asc']).draw(); } },
-                    { text: 'Prioridad <i id="icon_sda" class="fas fa-arrow-up"></i>', action: function () { table.order([3, 'asc']).draw(); } },
-                    { text: 'Nombre <i id="icon_sda" class="fas fa-arrow-down"></i>', action: function () { table.order([0, 'desc']).draw(); } },
-                    { text: 'Solicitud <i id="icon_sda" class="fas fa-arrow-down"></i>', action: function () { table.order([1, 'desc']).draw(); } },
-                    { text: 'Fecha <i id="icon_sda" class="fas fa-arrow-down"></i>', action: function () { table.order([2, 'desc']).draw(); } },
-                    { text: 'Prioridad <i id="icon_sda" class="fas fa-arrow-down"></i>', action: function () { table.order([3, 'desc']).draw(); } },
-                    ]
-                }]
-                
-                
-
+    const [prohibido, setProhibido] = useState(false)
+    const getCookie = (name) => {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
-        );
+        }
+        return cookieValue;
     }
     if(props.location.search != ""){
         var data = props.location.search
@@ -88,32 +31,48 @@ const Problemas = (props) => {
     else{
         var data = "none"
     }
-    useEffect(()=>{
+    useEffect(async()=>{
+        const accessToken = await getAccessTokenSilently()
+        var csrftoken = await getCookie('csrftoken');
+        
         var URL = '/api/problemas/'+String(data)
+        const datos_curso = props.location.data;
+        console.log("Dame los datos para pedir problemas: ", props.match.params.id)
         console.log(URL)
         fetch(URL, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
+            method: 'POST',
+            headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`, 'X-CSRFToken': csrftoken},
+            body: JSON.stringify({
+                'correo': user.email,
+                'tipo': 'docente', 
+                'curso': props.match.params.id
+            }),
         }).then((response) => response.json())
         .then((json) =>{
             if(json.data){
                 setDatos(json.data)
                 
             }
+            else{
+                setProhibido(true)
+            }
         })
 
     },[])
-
+    if(prohibido){
+        return (<div className="grid">
+            
+        <h1>No puedes acceder a este apartado</h1>
+        
+    </div>)
+    }
     return(
         
         <div className="grid">
             
             <div className="content">
                 <Filtro/>
-                <Tabla problemas={datos}/>                
+                <Tabla problemas={datos} curso_id={props.match.params.id}/>                
             </div>
             
         </div>

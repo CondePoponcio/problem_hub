@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
+from django.db import connection
 from rest_framework import generics, status, filters
 from api.serializers import * 
 from api.models import *
@@ -17,26 +18,58 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 import os
 
-class CheckUserCourse(BasePermission):
+
+def dictfetchall(cursor): 
+    "Returns all rows from a cursor as a dict" 
+    desc = cursor.description 
+    return [
+            dict(zip([col[0] for col in desc], row)) 
+            for row in cursor.fetchall() 
+    ]
+
+
+class CheckIsAdmin(BasePermission):
     """
     Global permission check for blocked IPs.
     """
 
     def has_permission(self, request, view):
-        #ip_addr = request.META['REMOTE_ADDR']
-        #blocked = Blocklist.objects.filter(ip_addr=ip_addr).exists()
-        #return not blocked
-        return True
 
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT api_administradores.*
+            from api_administradores
+            where api_administradores.correo = %s 
+            """, [request.data.get("correo")])
+            
+            row = dictfetchall(cursor)
+        print("Que envía a admin: ", row)
+        if len(row) == 0:
+            return False
+        else:
+            return True
 
 # Create your views here.
+@api_view(['POST'])
+def IsAdmin(request):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+        SELECT api_administradores.*
+        from api_administradores
+        where api_administradores.correo = %s 
+        """, [request.data.get("correo")])
+        
+        row = dictfetchall(cursor)
+    print("Que envía a admin: ", row)
+    if len(row) == 0:
+        return Response({'data': False})
+    else:
+        return Response({'data': True})
+
 class CreateRamo(APIView):
     serializer_class = CrearRamosSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def post(self, request, format=None):
-        if not self.request.session.exists(self.request.session.session_key):
-            self.request.session.create()
-
         serializer = self.serializer_class(data = request.data)
         if serializer.is_valid():
         
@@ -53,7 +86,7 @@ class CreateRamo(APIView):
 
 class CreateCursos(APIView):
     serializer_class = CrearCursosSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
@@ -89,7 +122,7 @@ class CursosView(APIView):
 
 class CursoView(APIView):
     serializer_class = CursosSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         arr = []
@@ -99,7 +132,7 @@ class CursoView(APIView):
         return Response({'data': arr})
 
 class MiembrosCursoView(APIView):
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def get(self, request, *args, **kwargs):
         curso_id = self.kwargs['id']
         arr = []
@@ -116,7 +149,7 @@ class MiembrosCursoView(APIView):
         return Response({'data': arr})
 
 class editarTipoUsuarios(APIView):
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def post(self, request, *args, **kwargs):
         curso_id = self.kwargs['id']
         datos = request.data["data"]
@@ -141,7 +174,7 @@ class editarTipoUsuarios(APIView):
         
 class UsuarioView(APIView):
     serializer_class = UsuariosSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         #id = request.query_params.get('title', None)
@@ -151,7 +184,7 @@ class UsuarioView(APIView):
 
 class agregarMiembros(APIView):
     serializer_class = MiembroCursoSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def post(self, request, format=None):
         data = request.data["usuarios"]
         correos = data.split(",")
@@ -172,7 +205,7 @@ class agregarMiembros(APIView):
 
 class agregarUsuario(APIView):
     serializer_class = UsuariosSerializer
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
@@ -190,7 +223,7 @@ class agregarUsuario(APIView):
             return Response({'error': serializer.errors, 'msg':'Los datos no se han ingresado correctamente'})
 
 class Scraper(APIView):
-    permission_classes = [CheckUserCourse]
+    permission_classes = [CheckIsAdmin]
     def post(self, request, *args, **kwargs):
         categoria = request.data["categoria"]
         dificultad = request.data["dificultad"]

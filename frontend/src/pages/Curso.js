@@ -46,9 +46,8 @@ import Curso from './Curso';
 
 const DashBoard = (props) => {
     const { match } = props;
-    const [cursos, setCursos] = useState([])
+    const [curso, setCurso] = useState([])
     const { user, isLoading, isAuthenticated, getAccessTokenSilently, error } = useAuth0();
-    const [checkCourse, setCheckCourse] = useState(false)
     const [cargando, setCargando] = useState(false)
     if (error) {
     return <div>Oops... {error.message}</div>;
@@ -72,8 +71,23 @@ const DashBoard = (props) => {
         return cookieValue;
     }
     useEffect(async ()=>{
-        console.log("Data from Location: ", props.location.data)
-        
+        if(!isAuthenticated || !user) return null
+        const accessToken = await getAccessTokenSilently()
+        var csrftoken = await getCookie('csrftoken');
+        const requestOptions = {
+            method: "POST",
+            headers: { Accept: 'application/json', "Content-Type": "application/json", Authorization: `Bearer ${accessToken}`, 'X-CSRFToken': csrftoken},
+            body: JSON.stringify({
+                'id':props.match.params.id
+            }),
+        };
+        fetch(`/api/curso/${props.match.params.id}`, requestOptions).then((response) => response.json())
+        .then((json) =>{
+            console.log("HA",json)
+            if(json.data){
+                setCurso(json.data[0])
+            }
+        })
     },[])
     const jQuerycode = () => {
         
@@ -83,7 +97,7 @@ const DashBoard = (props) => {
     },[])
 
     return (
-        (props.location.data == undefined)?(
+        (!curso)?(
         <h1 style={{width:"100%", height: "100%", display:"flex", justifyContent:"center", alignItems:"center", color:"rgb(51 45 45)"}}>
             <p>No tiene autorización para ver este curso</p>
         </h1>
@@ -91,14 +105,16 @@ const DashBoard = (props) => {
         (
         <div>
             <div className="main-header">
-            <div className="main-header__heading">Hello User</div>
+            <div className="main-header__heading">Hola que tal, bienvenido/a al curso de {curso.nombre}</div>
             <div className="main-header__updates">Recent Items</div>
             </div>
 
             <div className="main-overview">
             <div className="overviewcard">
-                <div className="overviewcard__icon">Overview</div>
-                <div className="overviewcard__info">Card</div>
+                <Link className="overviewcard__info" to={{
+                    pathname:`/dashboard/curso/${curso.id}/problemas`,
+                    data: curso
+                }}>Ver apartado de problemas Problemas</Link>
             </div>
             <div className="overviewcard">
                 <div className="overviewcard__icon">Overview</div>

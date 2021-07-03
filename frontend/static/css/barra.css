@@ -1,0 +1,14 @@
+.topBar{
+    height: 50px;
+}
+.topBar div{
+    height: inherit;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.topBar img{
+    height: inherit;
+    border-radius: 50%;
+    margin-left: 1em;
+}

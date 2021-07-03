@@ -49,12 +49,36 @@ class CheckAluCourse(BasePermission):
             """, [request.data.get("correo"), request.data.get("curso"), request.data.get("tipo")])
             
             row = dictfetchall(cursor)
+        print("Hey Pipe que es lo que te dio: \n","curso", request.data.get("curso"),"\ntipo", request.data.get("tipo"), row)
+        if len(row) == 0:
+            return False
+        else:
+            return True
+
+class CheckCorrectCourse(BasePermission):
+    """
+    Global permission check for blocked IPs.
+    """
+
+    def has_permission(self, request, view):
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT api_cursos.* , api_miembros_curso.tipo, api_ramos.nombre
+            from api_usuarios, api_miembros_curso, api_cursos , api_ramos
+            where api_usuarios.id = api_miembros_curso.usuario_id_id 
+            and api_miembros_curso.curso_id_id = api_cursos.id 
+            and api_cursos.codigo_ramo_id = api_ramos.id
+            and api_usuarios.correo = %s 
+            and api_cursos.id = %s 
+            """, [request.data.get("correo"), request.data.get("curso")])
+            
+            row = dictfetchall(cursor)
         print("Hey Pipe que es lo que te dio: ", row, row is None, not row)
         if len(row) == 0:
             return False
         else:
             return True
-        
 
 # Create your views here.
 
@@ -70,7 +94,7 @@ class ProblemasView(generics.ListAPIView):
 class ProblemasView(APIView):
     serializer_class = ProblemasSerializer
     permission_classes = [CheckAluCourse]
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         queryset = Problemas.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response({'data': serializer.data})
@@ -78,7 +102,7 @@ class ProblemasView(APIView):
 class ProblemasFilterView(generics.ListAPIView):
     serializer_class = ProblemasSerializer
     permission_classes = [CheckAluCourse]
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         print(kwargs['data'])
         if(kwargs['data'] != "none" and kwargs['data'] != "categoria=&dificultad=Null"):
             print("Filtro")
@@ -109,7 +133,7 @@ class ProblemasFilterView(generics.ListAPIView):
 
 class ViewOneProblem(APIView):
     serializer_class = ProblemasSerializer
-    permission_classes = [CheckAluCourse]
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         id = self.kwargs['id']
         #id = request.query_params.get('title', None)
@@ -119,7 +143,7 @@ class ViewOneProblem(APIView):
 
 class editProblem(APIView):
     serializer_class = CrearProblemaSerializer
-    permission_classes = [CheckAluCourse]
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         print("Entro")
         print(kwargs)
@@ -179,7 +203,7 @@ class CreateProblemas(APIView):
 
 class RamoView(APIView):
     serializer_class = RamosSerializer
-    permission_classes = [CheckAluCourse]
+    permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         queryset = Ramos.objects.all()
         serializer = self.serializer_class(queryset, many=True)
@@ -212,13 +236,19 @@ class CursosStudentView(APIView):
 
 class ViewOneCurso(APIView):
     serializer_class = CursosSerializer
-    permission_classes = [CheckAluCourse]
-    def get(self, request, *args, **kwargs):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
         id = self.kwargs['id']
         #id = request.query_params.get('title', None)
-        queryset = Cursos.objects.get(id=id)
-        serializer = self.serializer_class(queryset)
-        return Response({'data': serializer.data})
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT api_cursos.* , api_ramos.nombre
+            from api_cursos , api_ramos
+            where api_cursos.codigo_ramo_id = api_ramos.id
+            and api_cursos.id = %s""", [id])
+            
+            row = dictfetchall(cursor)
+        return Response({'data': row})
 
 class UsuariosView(APIView):
     serializer_class = UsuariosSerializer

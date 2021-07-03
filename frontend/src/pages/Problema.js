@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import './../../static/css/inicio.css'
+import './../../static/css/problemas/problema.css'
 import TopNavBar from './../components/TopNavbar';
 import { useAuth0 } from "@auth0/auth0-react";
 import CSRFToken from "../components/csrftoken"

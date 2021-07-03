@@ -8,7 +8,8 @@ urlpatterns = [
     path('', index),
     path('dashboard', index),
     path('dashboard/home', index),
-    path('dashboard/problemas', index),
+    path('dashboard/curso/<int:id>/problemas', index),
+    path('dashboard/curso/<int:curso_id>/problema/<int:id>', index),
     path('dashboard/join', index),
     path('dashboard/create', index),
     path('dashboard/profile', index),
@@ -24,5 +25,6 @@ urlpatterns = [
 
     path('dashboard/scraper',index),
     path('dashboard/curso/<int:id>',index),
+    path('dashboard-admin',admin),
     
 ]

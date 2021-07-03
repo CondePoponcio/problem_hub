@@ -15,6 +15,7 @@ urlpatterns = [
     path('miembros_curso/<int:id>', MiembrosCursoView.as_view()),
     path('editar_miembros/<int:id>', editarTipoUsuarios.as_view()),
     path('scraper', Scraper.as_view()),
+    path('isadmin', IsAdmin),
 
 
 ]

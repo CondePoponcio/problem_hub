@@ -67,7 +67,7 @@ const Profile = () => {
   return (
     isAuthenticated && (
       <div className="container">
-        <a href={"/home"}> Ir al Home</a>
+        <a href={"/dashboard"}> Ir al Home</a>
         <img src={user.picture} alt={user.name} />
         <h2>{user.name}</h2>
         <p>{user.email}</p>
